@@ -19,8 +19,8 @@
         <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
             <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none"
                onclick="if (!(confirm('Вы уверены, что хотите начать с начала?'))) return false">
-                <img src="quest.svg" height="48" alt="Квест"/>
-                <span class="fs-4">Квест</span>
+                <img src="images/quest.svg" height="48" alt="Текстовый квест"/>
+                <span class="fs-4">Текстовый квест</span>
             </a>
         </header>
     </div>
@@ -35,12 +35,26 @@
             <span th:if="${currentStep.isNegativeFinal()}" class="badge text-bg-danger rounded-pill">Отрицательный исход!</span>
             <span th:if="${currentStep.isNeutralFinal()}" class="badge text-bg-secondary rounded-pill">Нейтральный исход.</span>
         </div>
-        <tr th:each="choice, iter : ${currentStep.getChoices()}" >
-            <td >
-                <a style="margin:20px" th:text="${choice.getDescription()}" th:href="@{/nextStep(choiceId=${iter.index})}"
-                   class="btn btn-info" />
-            </td>
-        </tr>
+
+
+<!--        <tr th:each="choice, iter : ${currentStep.getChoices()}" >-->
+<!--            <td>-->
+<!--                <a style="margin:20px" th:text="${choice.getDescription()}" th:href="@{/nextStep(choiceId=${iter.index})}"-->
+<!--                   class="btn btn-info" />-->
+<!--            </td>-->
+<!--        </tr>-->
+
+        <form th:unless="${currentStep.isFinal()}" th:action="@{/nextStep}">
+            <tr th:each="choice, iter : ${currentStep.getChoices()}" >
+                <td>
+                    <div style="margin:10px">
+                        <input type="radio" th:id="'choice'+ ${iter.index}" th:name="choiceId" th:value="${iter.index}"/>
+                        <label th:for="'choice'+ ${iter.index}" th:text="${choice.getDescription()}"/>
+                    </div>
+                </td>
+            </tr>
+            <button style="margin:10px" class="btn btn-primary" type="submit">Выбрать</button>
+        </form>
     </div>
 </body>
 </html>
