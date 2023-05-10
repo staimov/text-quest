@@ -15,21 +15,13 @@
     <title>Добро пожаловать на квест</title>
 </head>
 <body>
-<div class="container">
-    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
-        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-            <img src="images/quest.svg" height="48" alt="Текстовый квест"/>
-            <span class="fs-4">Текстовый квест</span>
-        </a>
-    </header>
-</div>
+    <div th:insert="~{fragments/header :: header(questName=${questModel.getName()}, onClickConfirm=${false})}"/>
 
-<div class="container d-flex flex-column">
-    <h4 th:text="${questModel.getName()}"/>
-    <p th:text="${questModel.getDescription()}"/>
-    <a style="margin:20px" th:href="@{/startQuest}" class="btn btn-primary">Начать</a>
-</div>
-
-
+    <div class="container d-flex flex-column">
+        <p th:text="${questModel.getDescription()}"/>
+        <div>
+            <a style="margin:10px" th:href="@{/startQuest}" class="btn btn-primary">Начать</a>
+        </div>
+    </div>
 </body>
 </html>
