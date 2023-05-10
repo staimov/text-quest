@@ -20,7 +20,7 @@
     <div class="container d-flex flex-column">
         <p th:if="${currentStep.getPreviousChoiceDescription() != null
            && !currentStep.getPreviousChoiceDescription().isEmpty()}"
-           th:text="'Вы выбрали: ' + ${currentStep.getPreviousChoiceDescription()}"/>
+           th:text="'Ты выбрал: ' + ${currentStep.getPreviousChoiceDescription()}"/>
 
         <p th:text="${currentStep.getDescription()}"/>
 
