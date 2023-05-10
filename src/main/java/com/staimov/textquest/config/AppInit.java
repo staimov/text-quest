@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AppInit implements CommandLineRunner {
-    private QuestService service;
+    private final QuestService service;
 
     @Autowired
     public AppInit(QuestService service) {

@@ -42,10 +42,6 @@ public class QuestModel {
         this.heroName = heroName;
     }
 
-    public boolean isInProgress() {
-        return currentStep != null;
-    }
-
     public QuestStep getRoot() {
         return root;
     }
@@ -73,18 +69,18 @@ public class QuestModel {
     }
 
     public boolean isFinal() {
-        return currentStep.isFinal();
+        return currentStep != null && currentStep.isFinal();
     }
 
     public boolean isPositiveFinal() {
-        return currentStep.isPositiveFinal();
+        return currentStep != null && currentStep.isPositiveFinal();
     }
 
     public boolean isNegativeFinal() {
-        return currentStep.isNegativeFinal();
+        return currentStep != null && currentStep.isNegativeFinal();
     }
 
     public boolean isNeutralFinal() {
-        return currentStep.isNeutralFinal();
+        return currentStep != null && currentStep.isNeutralFinal();
     }
 }

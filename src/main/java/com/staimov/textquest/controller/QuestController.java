@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 public class QuestController {
     private static final Logger logger = LoggerFactory.getLogger(QuestController.class);
 
-    private QuestService service;
+    private final QuestService service;
 
     @Autowired
     public QuestController(QuestService service) {
@@ -27,7 +27,7 @@ public class QuestController {
     }
 
     @GetMapping("/startQuest")
-    public String startQuest(Model model) {
+    public String startQuest() {
         service.restartQuest();
         return "redirect:/currentStep";
     }
