@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class QuestService {
     private static final Logger logger = LoggerFactory.getLogger(QuestService.class);
 
-    private QuestModel model;
+    final private QuestModel model;
 
     @Autowired
     public QuestService(QuestModel model) {
