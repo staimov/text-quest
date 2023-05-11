@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class QuestModeOrderedTest {
 
-    private QuestModel model = new QuestModel();
+    private final QuestModel model = new QuestModel();
 
     @Test
     @Order(10)
