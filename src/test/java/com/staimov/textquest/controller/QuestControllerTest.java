@@ -3,6 +3,7 @@ package com.staimov.textquest.controller;
 import com.staimov.textquest.model.QuestModel;
 import com.staimov.textquest.model.QuestStep;
 import com.staimov.textquest.service.QuestService;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -10,7 +11,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.mockito.Mockito.doReturn;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -27,7 +29,6 @@ class QuestControllerTest {
         mvc.perform(get("/startQuest").accept(MediaType.TEXT_HTML))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/currentStep"));
-        // TODO: additional expected needed
     }
 
     @Test
@@ -35,7 +36,22 @@ class QuestControllerTest {
         mvc.perform(get("/nextStep").param("choiceId", "0").accept(MediaType.TEXT_HTML))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/currentStep"));
-        // TODO: additional expected needed
+    }
+
+    @Test
+    void testNextStepWithEmptyChoiceId() throws Exception {
+        mvc.perform(get("/nextStep").accept(MediaType.TEXT_HTML))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    @Disabled
+    void testNextStepIfServiceThrowsIllegalStateException() throws Exception {
+        doThrow(IllegalStateException.class).when(service).nextQuestStep(anyInt());
+
+        mvc.perform(get("/nextStep").param("choiceId", "0").contentType(MediaType.TEXT_HTML))
+                .andExpect(status().is4xxClientError())
+                .andExpect(result -> assertTrue(result.getResolvedException() instanceof IllegalStateException));
     }
 
     @Test
