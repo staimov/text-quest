@@ -24,7 +24,7 @@ public class CustomErrorController implements ErrorController {
         logger.error(message);
 
         if (status != null) {
-            int statusCode = Integer.valueOf(status.toString());
+            int statusCode = Integer.parseInt(status.toString());
 
             if(statusCode == HttpStatus.NOT_FOUND.value()) {
                 message = "Извините, мы не смогли найти страницу, которую вы ищете.";
