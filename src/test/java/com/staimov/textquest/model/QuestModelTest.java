@@ -1,5 +1,6 @@
 package com.staimov.textquest.model;
 
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -119,7 +120,6 @@ class QuestModelTest {
     @Test
     void modelWithNullCurrentStepShouldNotBeFinal() {
         QuestModel model = new QuestModel();
-        assertFalse(model.isFinal());
 
         assertAll(
                 () -> assertFalse(model.isFinal()),
@@ -135,7 +135,18 @@ class QuestModelTest {
         QuestStep root = new QuestStep();
         model.setRoot(root);
         model.restart();
+
         assertTrue(model.isFinal());
+    }
+
+    @Test
+    void modelWithFinalCurrentStepShouldBeNeutralFinalByDefault() {
+        QuestModel model = new QuestModel();
+        QuestStep root = new QuestStep();
+        model.setRoot(root);
+        model.restart();
+
+        assertTrue(model.isNeutralFinal());
     }
 
     @Test

@@ -21,6 +21,14 @@ class QuestStepTest {
     }
 
     @Test
+    void stepWithNotEmptyChoicesShouldNotBeNeutralFinalByDefault() {
+        QuestStep step = new QuestStep();
+        step.getChoices().add(new QuestChoice());
+
+        assertFalse(step.isNeutralFinal());
+    }
+
+    @Test
     void finalStepWithGoodTypeShouldBePositiveFinalOnly() {
         QuestStep step = new QuestStep();
         step.setType(StepType.GOOD);
