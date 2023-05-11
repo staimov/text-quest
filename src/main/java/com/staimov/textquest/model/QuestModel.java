@@ -69,18 +69,22 @@ public class QuestModel {
     }
 
     public boolean isFinal() {
-        return currentStep != null && currentStep.isFinal();
+        return isStarted() && currentStep.isFinal();
     }
 
     public boolean isPositiveFinal() {
-        return currentStep != null && currentStep.isPositiveFinal();
+        return isStarted() && currentStep.isPositiveFinal();
     }
 
     public boolean isNegativeFinal() {
-        return currentStep != null && currentStep.isNegativeFinal();
+        return isStarted() && currentStep.isNegativeFinal();
     }
 
     public boolean isNeutralFinal() {
-        return currentStep != null && currentStep.isNeutralFinal();
+        return isStarted() && currentStep.isNeutralFinal();
+    }
+
+    public boolean isStarted() {
+        return currentStep != null;
     }
 }
