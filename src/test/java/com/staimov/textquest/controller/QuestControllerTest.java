@@ -11,6 +11,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -19,39 +21,47 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(QuestController.class)
 class QuestControllerTest {
     @Autowired
-    private MockMvc mvc;
+    private MockMvc mockMvc;
 
     @MockBean
     private QuestService service;
 
     @Test
     void testStartQuest() throws Exception {
-        mvc.perform(get("/startQuest").accept(MediaType.TEXT_HTML))
+        mockMvc.perform(get("/startQuest").accept(MediaType.TEXT_HTML))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/currentStep"));
     }
 
     @Test
     void testNextStepWithCorrectChoiceId() throws Exception {
-        mvc.perform(get("/nextStep").param("choiceId", "0").accept(MediaType.TEXT_HTML))
+        mockMvc.perform(get("/nextStep").param("choiceId", "0").accept(MediaType.TEXT_HTML))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/currentStep"));
     }
 
     @Test
     void testNextStepWithEmptyChoiceId() throws Exception {
-        mvc.perform(get("/nextStep").accept(MediaType.TEXT_HTML))
+        mockMvc.perform(get("/nextStep").accept(MediaType.TEXT_HTML))
                 .andExpect(status().is4xxClientError());
     }
 
     @Test
-    @Disabled
-    void testNextStepIfServiceThrowsIllegalStateException() throws Exception {
+    void testNextStepIfServiceThrowsIllegalStateException() {
         doThrow(IllegalStateException.class).when(service).nextQuestStep(anyInt());
 
-        mvc.perform(get("/nextStep").param("choiceId", "0").contentType(MediaType.TEXT_HTML))
-                .andExpect(status().is4xxClientError())
-                .andExpect(result -> assertTrue(result.getResolvedException() instanceof IllegalStateException));
+        assertThatThrownBy(
+                () -> mockMvc.perform(get("/nextStep").param("choiceId", "0")))
+            .hasCauseInstanceOf(IllegalStateException.class);
+    }
+
+    @Test
+    void testNextStepIfServiceThrowsIndexOutOfBoundsException() {
+        doThrow(IndexOutOfBoundsException.class).when(service).nextQuestStep(anyInt());
+
+        assertThatThrownBy(
+                () -> mockMvc.perform(get("/nextStep").param("choiceId", "0")))
+            .hasCauseInstanceOf(IndexOutOfBoundsException.class);
     }
 
     @Test
@@ -60,7 +70,7 @@ class QuestControllerTest {
 
         doReturn(questModel).when(service).getQuestModel();
 
-        mvc.perform(get("/welcome").accept(MediaType.TEXT_HTML))
+        mockMvc.perform(get("/welcome").accept(MediaType.TEXT_HTML))
                 .andExpect(status().isOk())
                 .andExpect(view().name("welcome"))
                 .andExpect(model().attribute("questModel", questModel));
@@ -75,7 +85,7 @@ class QuestControllerTest {
         doReturn(questModel).when(service).getQuestModel();
         doReturn(currentStep).when(service).getCurentQuestStep();
 
-        mvc.perform(get("/currentStep").accept(MediaType.TEXT_HTML))
+        mockMvc.perform(get("/currentStep").accept(MediaType.TEXT_HTML))
                 .andExpect(status().isOk())
                 .andExpect(view().name("currentStep"))
                 .andExpect(model().attribute("questName", "foo"))
