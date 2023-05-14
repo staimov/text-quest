@@ -13,6 +13,7 @@
           crossorigin="anonymous">
 
     <title>Добро пожаловать</title>
+    <link rel="shortcut icon" type="images/png" th:href="@{/images/quest.png}"/>
 </head>
 <body>
     <div th:insert="~{fragments/header :: header(questName=${questModel.getName()}, onClickConfirm=${false})}"/>
