@@ -57,7 +57,7 @@ public class QuestService {
 
     public void restartQuest() {
         model.restart();
-        logger.info("Quest started");
+        logger.info("Quest started: {}", model.getName());
     }
 
     public void resetQuest() {
