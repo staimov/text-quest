@@ -64,4 +64,9 @@ class QuestStepTest {
             () -> assertFalse(step.isNegativeFinal())
         );
     }
+
+    @Test
+    void stepShouldBeNeutralByDefault() {
+        assertEquals(StepType.NEUTRAL, new QuestStep().getType());
+    }
 }
