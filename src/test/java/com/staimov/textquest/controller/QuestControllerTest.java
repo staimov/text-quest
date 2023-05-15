@@ -6,6 +6,7 @@ import com.staimov.textquest.service.QuestService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -24,6 +25,7 @@ class QuestControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
+    @Qualifier("selectedQuestService")
     private QuestService service;
 
     @Test

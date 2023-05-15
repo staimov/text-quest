@@ -16,22 +16,23 @@
     <link rel="shortcut icon" type="images/svg" th:href="@{/images/quest.svg}"/>
 </head>
 <body>
-    <div th:insert="~{fragments/header :: header(questName=${questName}, onClickConfirm=${!currentStep.isFinal()})}"/>
+    <div th:insert="~{fragments/header :: header(questName=${questName},
+        onClickConfirm=${currentStep != null && !currentStep.isFinal()})}"/>
 
     <div class="container d-flex flex-column">
-        <p th:if="${currentStep.getPreviousChoiceDescription() != null
+        <p th:if="${currentStep != null && currentStep.getPreviousChoiceDescription() != null
            && !currentStep.getPreviousChoiceDescription().isEmpty()}"
            th:text="'Ты выбрал: ' + ${currentStep.getPreviousChoiceDescription()}"/>
 
-        <p th:text="${currentStep.getDescription()}"/>
+        <p th:text="${currentStep != null ? currentStep.getDescription() : 'Ничего не происходит...'}"/>
 
-        <div th:if="${currentStep.isFinal()}">
+        <div th:if="${currentStep != null && currentStep.isFinal()}">
             <span th:if="${currentStep.isPositiveFinal()}" class="badge text-bg-success rounded-pill">Положительный исход!</span>
             <span th:if="${currentStep.isNegativeFinal()}" class="badge text-bg-danger rounded-pill">Отрицательный исход!</span>
             <span th:if="${currentStep.isNeutralFinal()}" class="badge text-bg-secondary rounded-pill">Нейтральный исход.</span>
         </div>
 
-        <form th:unless="${currentStep.isFinal()}" th:action="@{/nextStep}">
+        <form th:unless="${currentStep == null || currentStep.isFinal()}" th:action="@{/nextStep}">
             <table>
                 <tr th:each="choice, iter : ${currentStep.getChoices()}" >
                     <td>

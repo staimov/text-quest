@@ -4,6 +4,7 @@ import com.staimov.textquest.service.QuestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ public class QuestController {
     private final QuestService service;
 
     @Autowired
-    public QuestController(QuestService service) {
+    public QuestController(@Qualifier("selectedQuestService") QuestService service) {
         this.service = service;
     }
 

@@ -2,6 +2,7 @@ package com.staimov.textquest.config;
 
 import com.staimov.textquest.service.QuestService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +11,7 @@ public class AppInit implements CommandLineRunner {
     private final QuestService service;
 
     @Autowired
-    public AppInit(QuestService service) {
+    public AppInit(@Qualifier("selectedQuestService") QuestService service) {
         this.service = service;
     }
 
