@@ -29,21 +29,29 @@ public abstract class AbstractQuestService implements QuestService {
 
     public void resetQuest() {
         model.reset();
+        logger.debug("Quest reset");
     }
 
     public void makeQuestChoice(int choiceId) {
+        logger.debug("Make quest choice (choiceId = {})", choiceId);
 
         if (model.getCurrentStep() == null) {
-            throw new IllegalStateException("No current step.");
+            String message = "Current step is null";
+            logger.error(message);
+            throw new IllegalStateException(message);
         }
 
         if (choiceId >= model.getCurrentStep().getChoices().size()) {
-            throw new IndexOutOfBoundsException();
+            String message = String.format("Choice id %d is out of bounds", choiceId);
+            logger.error(message);
+            throw new IndexOutOfBoundsException(message);
         }
 
         QuestChoice choiceMade = model.getCurrentStep().getChoices().get(choiceId);
         model.setCurrentStep(choiceMade.getNextStep());
         model.getCurrentStep().setPreviousChoiceDescription(choiceMade.getDescription());
+
+        logger.info("Choice is made: {}", model.getCurrentStep().getPreviousChoiceDescription());
     }
 
     public QuestStep getCurentQuestStep() {

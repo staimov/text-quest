@@ -27,14 +27,14 @@ public class CustomErrorController implements ErrorController {
             int statusCode = Integer.parseInt(status.toString());
 
             if(statusCode == HttpStatus.NOT_FOUND.value()) {
-                message = "Извините, мы не смогли найти страницу, которую вы ищете.";
+                message = "Извините, мы не смогли найти страницу, которую вы ищете";
             }
 
-            logger.error("HTTP Status: " + status);
+            logger.error("HTTP Status: {}", status);
         }
 
         if (e != null) {
-            logger.error("Exception: " + e);
+            logger.error("An exception occurred!", e);
         }
 
         model.addAttribute("message", message);

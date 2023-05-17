@@ -18,6 +18,7 @@ public class EmptyQuestService extends AbstractQuestService {
     @Override
     public void initModel() {
         logger.info("Quest init: {}", getClass().getSimpleName());
+
         getQuestModel().setRoot(null);
         getQuestModel().setCurrentStep(null);
     }
