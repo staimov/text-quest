@@ -22,6 +22,8 @@ public class QuestController {
 
     @GetMapping("/welcome")
     public String welcome(Model model) {
+        logger.debug("welcome path requested");
+
         service.resetQuest();
         model.addAttribute("questModel", service.getQuestModel());
         return "welcome";
@@ -29,6 +31,8 @@ public class QuestController {
 
     @GetMapping("/startQuest")
     public String startQuest() {
+        logger.debug("startQuest path requested");
+
         service.restartQuest();
         return "redirect:/currentStep";
     }
@@ -36,11 +40,16 @@ public class QuestController {
     @GetMapping("/nextStep")
     public String nextStep(@RequestParam("choiceId") int choiceId) {
         service.makeQuestChoice(choiceId);
+
+        logger.debug("nextStep path requested (choiceId = {})", choiceId);
+
         return "redirect:/currentStep";
     }
 
     @GetMapping("/currentStep")
     public String currentStep(Model model) {
+        logger.debug("currentStep path requested");
+
         model.addAttribute("questName", service.getQuestModel().getName());
         model.addAttribute("currentStep", service.getCurentQuestStep());
         return "currentStep";
