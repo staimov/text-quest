@@ -9,5 +9,4 @@ public class TextQuestApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(TextQuestApplication.class, args);
 	}
-
 }
