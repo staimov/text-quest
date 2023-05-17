@@ -1,5 +1,6 @@
 package com.staimov.textquest.config;
 
+import com.staimov.textquest.model.QuestModel;
 import com.staimov.textquest.service.DefaultQuestService;
 import com.staimov.textquest.service.QuestService;
 import org.springframework.context.annotation.Bean;
@@ -11,7 +12,7 @@ public class QuestConfig {
     @Bean
     @SessionScope
     public QuestService selectedQuestService() {
-        return new DefaultQuestService();
-        //return new EmptyQuestService(model);
+        return new DefaultQuestService(new QuestModel());
+        //return new EmptyQuestService(new QuestModel());
     }
 }

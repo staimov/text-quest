@@ -10,9 +10,6 @@ import org.slf4j.LoggerFactory;
 public class DefaultQuestService extends AbstractQuestService {
     private static final Logger logger = LoggerFactory.getLogger(DefaultQuestService.class);
 
-    public DefaultQuestService() {
-    }
-
     public DefaultQuestService(QuestModel model) {
         super(model);
     }

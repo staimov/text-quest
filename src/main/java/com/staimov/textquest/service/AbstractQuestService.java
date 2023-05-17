@@ -12,10 +12,6 @@ public abstract class AbstractQuestService implements QuestService, Initializing
 
     private QuestModel questModel;
 
-    public AbstractQuestService() {
-        questModel = new QuestModel();
-    }
-
     public AbstractQuestService(QuestModel questModel) {
         this.questModel = questModel;
     }
