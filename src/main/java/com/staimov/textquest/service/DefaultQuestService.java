@@ -10,11 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ContactQuestService extends AbstractQuestService {
-    private static final Logger logger = LoggerFactory.getLogger(ContactQuestService.class);
+public class DefaultQuestService extends AbstractQuestService {
+    private static final Logger logger = LoggerFactory.getLogger(DefaultQuestService.class);
 
     @Autowired
-    public ContactQuestService(QuestModel model) {
+    public DefaultQuestService(QuestModel model) {
         super(model);
     }
 
@@ -49,5 +49,6 @@ public class ContactQuestService extends AbstractQuestService {
         step2.getChoices().add(new QuestChoice("Солгать о себе", step6));
 
         getQuestModel().setRoot(step0);
+        getQuestModel().setCurrentStep(null);
     }
 }

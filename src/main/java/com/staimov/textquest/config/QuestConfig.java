@@ -1,8 +1,7 @@
 package com.staimov.textquest.config;
 
 import com.staimov.textquest.model.QuestModel;
-import com.staimov.textquest.service.ContactQuestService;
-import com.staimov.textquest.service.EmptyQuestService;
+import com.staimov.textquest.service.DefaultQuestService;
 import com.staimov.textquest.service.QuestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +18,7 @@ public class QuestConfig {
 
     @Bean
     public QuestService selectedQuestService() {
-        return new ContactQuestService(model);
+        return new DefaultQuestService(model);
         //return new EmptyQuestService(model);
     }
 }
