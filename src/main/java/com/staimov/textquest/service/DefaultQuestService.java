@@ -21,7 +21,7 @@ public class DefaultQuestService extends AbstractQuestService {
     public void initModel() {
         logger.info("Quest init: {}", getClass().getSimpleName());
 
-        getQuestModel().setName("Контакт");
+        getQuestModel().setName("НЛО");
         getQuestModel().setDescription(
                 "Ты очнулся один на терпящем бедствие космическом корабле в открытом космосе. " +
                 "Тебе как-то надо вернуться домой.");
