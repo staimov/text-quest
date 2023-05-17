@@ -1,6 +1,5 @@
 package com.staimov.textquest.service;
 
-import com.staimov.textquest.model.QuestChoice;
 import com.staimov.textquest.model.QuestModel;
 import org.junit.jupiter.api.Test;
 

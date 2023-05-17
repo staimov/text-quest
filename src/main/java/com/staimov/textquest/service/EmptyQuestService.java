@@ -1,7 +1,6 @@
 package com.staimov.textquest.service;
 
 import com.staimov.textquest.model.QuestModel;
-import com.staimov.textquest.model.QuestStep;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
