@@ -7,7 +7,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class EmptyQuestServiceTest {
 
-    private final QuestService service = new EmptyQuestService(new QuestModel());
+    private final QuestService service =
+            new EmptyQuestService(new QuestModel());
 
     @Test
     void initModelShouldSetRootToNull() {

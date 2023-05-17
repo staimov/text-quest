@@ -5,12 +5,13 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class QuestModelTest {
+    private final QuestModel model = new QuestModel();
 
     @Test
     void modelAfterRestartShouldHaveNotNullCurrentStep() {
-        QuestModel model = new QuestModel();
         QuestStep root = new QuestStep();
         model.setRoot(root);
+
         model.restart();
 
         assertNotNull(model.getCurrentStep());
@@ -18,10 +19,10 @@ class QuestModelTest {
 
     @Test
     void modelAfterResetShouldHaveNullCurrentStep() {
-        QuestModel model = new QuestModel();
         QuestStep root = new QuestStep();
         model.setRoot(root);
         model.restart();
+
         model.reset();
 
         assertNull(model.getCurrentStep());
@@ -29,7 +30,6 @@ class QuestModelTest {
 
     @Test
     void justCreatedModelShouldHaveNullCurrentStep() {
-        QuestModel model = new QuestModel();
         QuestStep root = new QuestStep();
         model.setRoot(root);
 
@@ -38,7 +38,6 @@ class QuestModelTest {
 
     @Test
     void justCreatedModelShouldBeNotStarted() {
-        QuestModel model = new QuestModel();
         QuestStep root = new QuestStep();
         model.setRoot(root);
 
@@ -47,7 +46,6 @@ class QuestModelTest {
 
     @Test
     void restartedModelShouldBeStarted() {
-        QuestModel model = new QuestModel();
         QuestStep root = new QuestStep();
         model.setRoot(root);
 
@@ -58,7 +56,6 @@ class QuestModelTest {
 
     @Test
     void restartModelShouldSetCurrentStepToRoot() {
-        QuestModel model = new QuestModel();
         QuestStep root = new QuestStep();
         model.setRoot(root);
 
@@ -69,7 +66,6 @@ class QuestModelTest {
 
     @Test
     void resetModelShouldSetCurrentStepToNull() {
-        QuestModel model = new QuestModel();
         QuestStep root = new QuestStep();
         model.setRoot(root);
         model.restart();
@@ -81,7 +77,6 @@ class QuestModelTest {
 
     @Test
     void resetModelShouldNotBeStarted() {
-        QuestModel model = new QuestModel();
         QuestStep root = new QuestStep();
         model.setRoot(root);
         model.restart();
@@ -93,8 +88,6 @@ class QuestModelTest {
 
     @Test
     void modelWithNullCurrentStepShouldNotBeFinal() {
-        QuestModel model = new QuestModel();
-
         assertAll(
                 () -> assertFalse(model.isFinal()),
                 () -> assertFalse(model.isPositiveFinal()),
@@ -105,9 +98,9 @@ class QuestModelTest {
 
     @Test
     void modelWithFinalCurrentStepShouldBeFinal() {
-        QuestModel model = new QuestModel();
         QuestStep root = new QuestStep();
         model.setRoot(root);
+
         model.restart();
 
         assertTrue(model.isFinal());
@@ -115,9 +108,9 @@ class QuestModelTest {
 
     @Test
     void modelWithFinalCurrentStepShouldBeNeutralFinalByDefault() {
-        QuestModel model = new QuestModel();
         QuestStep root = new QuestStep();
         model.setRoot(root);
+
         model.restart();
 
         assertTrue(model.isNeutralFinal());
@@ -125,10 +118,10 @@ class QuestModelTest {
 
     @Test
     void modelWithPositiveFinalCurrentStepShouldBePositiveFinalOnly() {
-        QuestModel model = new QuestModel();
         QuestStep root = new QuestStep();
         root.setType(StepType.GOOD);
         model.setRoot(root);
+
         model.restart();
 
         assertAll(
@@ -140,10 +133,10 @@ class QuestModelTest {
 
     @Test
     void modelWithNegativeFinalCurrentStepShouldBeNegativeFinalOnly() {
-        QuestModel model = new QuestModel();
         QuestStep root = new QuestStep();
         root.setType(StepType.BAD);
         model.setRoot(root);
+
         model.restart();
 
         assertAll(
@@ -155,10 +148,10 @@ class QuestModelTest {
 
     @Test
     void modelWithNeutralFinalCurrentStepShouldBeNeutralFinalOnly() {
-        QuestModel model = new QuestModel();
         QuestStep root = new QuestStep();
         root.setType(StepType.NEUTRAL);
         model.setRoot(root);
+
         model.restart();
 
         assertAll(
