@@ -1,14 +1,13 @@
 package com.staimov.textquest.service;
 
 import com.staimov.textquest.model.QuestModel;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class EmptyQuestServiceTest {
 
-    private QuestService service = new EmptyQuestService(new QuestModel());
+    private final QuestService service = new EmptyQuestService(new QuestModel());
 
     @Test
     void initModelShouldSetRootToNull() {
