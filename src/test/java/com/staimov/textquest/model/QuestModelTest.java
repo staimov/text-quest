@@ -50,9 +50,33 @@ class QuestModelTest {
         QuestModel model = new QuestModel();
         QuestStep root = new QuestStep();
         model.setRoot(root);
+
         model.restart();
 
         assertTrue(model.isStarted());
+    }
+
+    @Test
+    void restartModelShouldSetCurrentStepToRoot() {
+        QuestModel model = new QuestModel();
+        QuestStep root = new QuestStep();
+        model.setRoot(root);
+
+        model.restart();
+
+        assertSame(root, model.getCurrentStep());
+    }
+
+    @Test
+    void resetModelShouldSetCurrentStepToNull() {
+        QuestModel model = new QuestModel();
+        QuestStep root = new QuestStep();
+        model.setRoot(root);
+        model.restart();
+
+        model.reset();
+
+        assertNull(model.getCurrentStep());
     }
 
     @Test
@@ -61,59 +85,10 @@ class QuestModelTest {
         QuestStep root = new QuestStep();
         model.setRoot(root);
         model.restart();
+
         model.reset();
 
         assertFalse(model.isStarted());
-    }
-
-    @Test
-    void makeChoiceForNullCurrentStepShouldThrowIllegalStateException() {
-        QuestModel model = new QuestModel();
-
-        assertThrows(IllegalStateException.class,
-                () -> model.makeChoice(0));
-    }
-
-    @Test
-    void makeChoiceForChoiceOutOfBoundsShouldThrowIllegalStateException() {
-        QuestModel model = new QuestModel();
-        QuestStep root = new QuestStep();
-        model.setRoot(root);
-        model.restart();
-
-        assertThrows(IndexOutOfBoundsException.class,
-                () -> model.makeChoice(0));
-    }
-
-    @Test
-    void makeChoiceSwitchToNextCurrentState() {
-        QuestModel model = new QuestModel();
-        QuestStep root = new QuestStep("root");
-        QuestStep next = new QuestStep("next");
-        QuestStep other = new QuestStep("other");
-        root.getChoices().add(new QuestChoice("select other", other)); //0
-        root.getChoices().add(new QuestChoice("select next", next)); //1
-        model.setRoot(root);
-        model.restart();
-        model.makeChoice(1); //next
-
-        assertEquals(next, model.getCurrentStep());
-    }
-
-    @Test
-    void makeChoiceAssignCorrectPreviousChoiceDescription() {
-        QuestModel model = new QuestModel();
-        QuestStep root = new QuestStep("root");
-        QuestStep next = new QuestStep("next");
-        QuestStep other = new QuestStep("other");
-        root.getChoices().add(new QuestChoice("select other", other)); //0
-        root.getChoices().add(new QuestChoice("select next", next)); //1
-        model.setRoot(root);
-        model.restart();
-        model.makeChoice(1); //next
-
-        assertEquals(root.getChoices().get(1).getDescription(),
-                model.getCurrentStep().getPreviousChoiceDescription());
     }
 
     @Test

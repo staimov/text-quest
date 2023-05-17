@@ -3,7 +3,6 @@ package com.staimov.textquest.controller;
 import com.staimov.textquest.model.QuestModel;
 import com.staimov.textquest.model.QuestStep;
 import com.staimov.textquest.service.QuestService;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -50,7 +49,7 @@ class QuestControllerTest {
 
     @Test
     void testNextStepIfServiceThrowsIllegalStateException() {
-        doThrow(IllegalStateException.class).when(service).nextQuestStep(anyInt());
+        doThrow(IllegalStateException.class).when(service).makeQuestChoice(anyInt());
 
         assertThatThrownBy(
                 () -> mockMvc.perform(get("/nextStep").param("choiceId", "0")))
@@ -59,7 +58,7 @@ class QuestControllerTest {
 
     @Test
     void testNextStepIfServiceThrowsIndexOutOfBoundsException() {
-        doThrow(IndexOutOfBoundsException.class).when(service).nextQuestStep(anyInt());
+        doThrow(IndexOutOfBoundsException.class).when(service).makeQuestChoice(anyInt());
 
         assertThatThrownBy(
                 () -> mockMvc.perform(get("/nextStep").param("choiceId", "0")))
