@@ -35,7 +35,7 @@ public class QuestController {
 
     @GetMapping("/nextStep")
     public String nextStep(@RequestParam("choiceId") int choiceId) {
-        service.nextQuestStep(choiceId);
+        service.makeQuestChoice(choiceId);
         return "redirect:/currentStep";
     }
 

@@ -12,7 +12,7 @@ public interface QuestService {
 
     void resetQuest();
 
-    void nextQuestStep(int choiceId);
+    void makeQuestChoice(int choiceId);
 
     QuestStep getCurentQuestStep();
 }

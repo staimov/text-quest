@@ -54,18 +54,8 @@ public class QuestModel {
         return currentStep;
     }
 
-    public void makeChoice(int choiceIndex) {
-        if (currentStep == null) {
-            throw new IllegalStateException("No current step.");
-        }
-
-        if (choiceIndex >= currentStep.getChoices().size()) {
-            throw new IndexOutOfBoundsException();
-        }
-
-        QuestChoice choiceMade = currentStep.getChoices().get(choiceIndex);
-        currentStep = choiceMade.getNextStep();
-        currentStep.setPreviousChoiceDescription(choiceMade.getDescription());
+    public void setCurrentStep(QuestStep currentStep) {
+        this.currentStep = currentStep;
     }
 
     public boolean isFinal() {

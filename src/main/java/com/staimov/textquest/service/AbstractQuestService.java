@@ -1,5 +1,6 @@
 package com.staimov.textquest.service;
 
+import com.staimov.textquest.model.QuestChoice;
 import com.staimov.textquest.model.QuestModel;
 import com.staimov.textquest.model.QuestStep;
 import org.slf4j.Logger;
@@ -8,7 +9,7 @@ import org.slf4j.LoggerFactory;
 public abstract class AbstractQuestService implements QuestService {
     private static final Logger logger = LoggerFactory.getLogger(AbstractQuestService.class);
 
-    final private QuestModel model;
+    private final QuestModel model;
 
     public AbstractQuestService(QuestModel model) {
         this.model = model;
@@ -30,8 +31,19 @@ public abstract class AbstractQuestService implements QuestService {
         model.reset();
     }
 
-    public void nextQuestStep(int choiceId) {
-        model.makeChoice(choiceId);
+    public void makeQuestChoice(int choiceId) {
+
+        if (model.getCurrentStep() == null) {
+            throw new IllegalStateException("No current step.");
+        }
+
+        if (choiceId >= model.getCurrentStep().getChoices().size()) {
+            throw new IndexOutOfBoundsException();
+        }
+
+        QuestChoice choiceMade = model.getCurrentStep().getChoices().get(choiceId);
+        model.setCurrentStep(choiceMade.getNextStep());
+        model.getCurrentStep().setPreviousChoiceDescription(choiceMade.getDescription());
     }
 
     public QuestStep getCurentQuestStep() {
