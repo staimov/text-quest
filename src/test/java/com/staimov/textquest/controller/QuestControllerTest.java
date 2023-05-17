@@ -36,7 +36,8 @@ class QuestControllerTest {
 
     @Test
     void testNextStepWithCorrectChoiceId() throws Exception {
-        mockMvc.perform(get("/nextStep").param("choiceId", "0").accept(MediaType.TEXT_HTML))
+        mockMvc.perform(get("/nextStep").param("choiceId", "0")
+                        .accept(MediaType.TEXT_HTML))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/currentStep"));
     }

@@ -18,6 +18,21 @@ class DefaultQuestServiceTest {
     }
 
     @Test
+    void makeQuestChoiceForNotStartedQuestShouldExceptionWithRelevantMessage() {
+        QuestService service = new DefaultQuestService(new QuestModel());
+        String actualMessage = null;
+
+        try {
+            service.makeQuestChoice(0);
+        }
+        catch (Exception e) {
+            actualMessage = e.getMessage();
+        }
+
+        assertEquals("Current step is null", actualMessage);
+    }
+
+    @Test
     void makeQuestChoiceForChoiceOutOfBoundsShouldThrowIndexOutOfBoundsException() {
         QuestModel model = new QuestModel();
         model.setRoot(new QuestStep());
@@ -26,6 +41,26 @@ class DefaultQuestServiceTest {
 
         assertThrows(IndexOutOfBoundsException.class,
                 () -> service.makeQuestChoice(0));
+    }
+
+    @Test
+    void makeQuestChoiceForChoiceOutOfBoundsShouldThrowExceptionWithRelevantMessage() {
+        QuestModel model = new QuestModel();
+        model.setRoot(new QuestStep());
+        QuestService service = new DefaultQuestService(model);
+        service.restartQuest();
+        int index = 2;
+        String expectedMessage  = String.format("Choice id %d is out of bounds", index);
+        String actualMessage = null;
+
+        try {
+            service.makeQuestChoice(index);
+        }
+        catch (Exception e) {
+            actualMessage = e.getMessage();
+        }
+
+        assertEquals(expectedMessage, actualMessage);
     }
 
     @Test
@@ -42,7 +77,7 @@ class DefaultQuestServiceTest {
 
         service.makeQuestChoice(1); //next
 
-        assertEquals(next, service.getCurentQuestStep());
+        assertSame(next, service.getCurentQuestStep());
     }
 
     @Test
