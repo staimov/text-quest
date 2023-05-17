@@ -1,16 +1,17 @@
 package com.staimov.textquest.service;
 
 import com.staimov.textquest.model.QuestModel;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class EmptyQuestServiceTest {
+
+    private QuestService service = new EmptyQuestService(new QuestModel());
+
     @Test
     void initModelShouldSetRootToNull() {
-        QuestModel model = new QuestModel();
-        QuestService service = new EmptyQuestService(model);
-
         service.initModel();
 
         assertNull(service.getQuestModel().getRoot());
@@ -18,9 +19,6 @@ class EmptyQuestServiceTest {
 
     @Test
     void initModelShouldSetCurrentStepToNull() {
-        QuestModel model = new QuestModel();
-        QuestService service = new EmptyQuestService(model);
-
         service.initModel();
 
         assertNull(service.getCurentQuestStep());
