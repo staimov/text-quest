@@ -52,6 +52,16 @@ public abstract class AbstractQuestService implements QuestService {
         model.getCurrentStep().setPreviousChoiceDescription(choiceMade.getDescription());
 
         logger.info("Choice is made: {}", model.getCurrentStep().getPreviousChoiceDescription());
+
+        if (model.isPositiveFinal()) {
+            logger.info("The quest is completed with a positive outcome");
+        }
+        else if (model.isNegativeFinal()) {
+            logger.info("The quest is completed with a negative outcome");
+        }
+        else {
+            logger.info("The quest is completed");
+        }
     }
 
     public QuestStep getCurentQuestStep() {
