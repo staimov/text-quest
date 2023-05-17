@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 public class QuestController {
     private static final Logger logger = LoggerFactory.getLogger(QuestController.class);
 
-    private final QuestService service;
+    private QuestService service;
 
     @Autowired
     public QuestController(@Qualifier("selectedQuestService") QuestService service) {

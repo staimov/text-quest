@@ -8,6 +8,8 @@ public interface QuestService {
 
     QuestModel getQuestModel();
 
+    void setQuestModel(QuestModel questModel);
+
     void restartQuest();
 
     void resetQuest();

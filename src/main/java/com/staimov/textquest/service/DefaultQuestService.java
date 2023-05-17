@@ -6,14 +6,10 @@ import com.staimov.textquest.model.QuestStep;
 import com.staimov.textquest.model.StepType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-@Service
 public class DefaultQuestService extends AbstractQuestService {
     private static final Logger logger = LoggerFactory.getLogger(DefaultQuestService.class);
 
-    @Autowired
     public DefaultQuestService(QuestModel model) {
         super(model);
     }

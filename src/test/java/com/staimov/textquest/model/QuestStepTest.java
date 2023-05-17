@@ -5,16 +5,15 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class QuestStepTest {
+    private final QuestStep step = new QuestStep();
+
     @Test
     void stepWithEmptyChoicesShouldBeFinal() {
-        QuestStep step = new QuestStep();
-
         assertTrue(step.isFinal());
     }
 
     @Test
     void stepWithNotEmptyChoicesShouldNotBeFinal() {
-        QuestStep step = new QuestStep();
         step.getChoices().add(new QuestChoice());
 
         assertFalse(step.isFinal());
@@ -22,7 +21,6 @@ class QuestStepTest {
 
     @Test
     void stepWithNotEmptyChoicesShouldNotBeNeutralFinalByDefault() {
-        QuestStep step = new QuestStep();
         step.getChoices().add(new QuestChoice());
 
         assertFalse(step.isNeutralFinal());
@@ -30,7 +28,6 @@ class QuestStepTest {
 
     @Test
     void finalStepWithGoodTypeShouldBePositiveFinalOnly() {
-        QuestStep step = new QuestStep();
         step.setType(StepType.GOOD);
 
         assertAll(
@@ -43,7 +40,6 @@ class QuestStepTest {
 
     @Test
     void finalStepWithBadTypeShouldBeNegativeFinalOnly() {
-        QuestStep step = new QuestStep();
         step.setType(StepType.BAD);
 
         assertAll(
@@ -55,7 +51,6 @@ class QuestStepTest {
 
     @Test
     void finalStepWithNeutralTypeShouldBeNeutralFinalOnly() {
-        QuestStep step = new QuestStep();
         step.setType(StepType.NEUTRAL);
 
         assertAll(
@@ -67,6 +62,6 @@ class QuestStepTest {
 
     @Test
     void stepShouldBeNeutralByDefault() {
-        assertEquals(StepType.NEUTRAL, new QuestStep().getType());
+        assertEquals(StepType.NEUTRAL, step.getType());
     }
 }

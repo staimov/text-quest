@@ -1,8 +1,5 @@
 package com.staimov.textquest.model;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class QuestModel {
     private QuestStep root;
     private QuestStep currentStep;
