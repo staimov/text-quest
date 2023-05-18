@@ -69,7 +69,11 @@ public abstract class AbstractQuestService implements QuestService {
         }
     }
 
-    public synchronized QuestStep getCurentQuestStep() {
+    public synchronized QuestStep getCurrentQuestStep() {
         return questModel.getCurrentStep();
+    }
+
+    public synchronized boolean isQuestStarted() {
+        return getCurrentQuestStep() != null;
     }
 }

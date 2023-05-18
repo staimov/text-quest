@@ -38,10 +38,19 @@ public class QuestController {
     }
 
     @GetMapping("/nextStep")
-    public String nextStep(@RequestParam("choiceId") int choiceId) {
-        service.makeQuestChoice(choiceId);
-
+    public String nextStep(@RequestParam("choiceId") int choiceId,
+                           @RequestParam("stepId") int stepId) {
         logger.debug("nextStep path requested (choiceId = {})", choiceId);
+
+        if (!service.isQuestStarted()) {
+            throw new IllegalStateException("There is no running quest in this session");
+        }
+        else if (stepId != service.getCurrentQuestStep().getId()) {
+            logger.warn("Looks like another client has already made a choice in this quest session");
+        }
+        else {
+            service.makeQuestChoice(choiceId);
+        }
 
         return "redirect:/currentStep";
     }
@@ -51,7 +60,7 @@ public class QuestController {
         logger.debug("currentStep path requested");
 
         model.addAttribute("questName", service.getQuestModel().getName());
-        model.addAttribute("currentStep", service.getCurentQuestStep());
+        model.addAttribute("currentStep", service.getCurrentQuestStep());
         return "currentStep";
     }
 }

@@ -30,17 +30,20 @@
             <span th:if="${currentStep.isPositiveFinal()}" class="badge text-bg-success rounded-pill">Положительный исход!</span>
             <span th:if="${currentStep.isNegativeFinal()}" class="badge text-bg-danger rounded-pill">Отрицательный исход!</span>
             <span th:if="${currentStep.isNeutralFinal()}" class="badge text-bg-secondary rounded-pill">Нейтральный исход.</span>
-            <div>
-                <a style="margin:10px" href="/" class="btn btn-primary">В начало</a>
-            </div>
+        </div>
+
+        <div th:if="${currentStep == null || currentStep.isFinal()}">
+            <a style="margin:10px" href="/" class="btn btn-primary">В начало</a>
         </div>
 
         <form th:unless="${currentStep == null || currentStep.isFinal()}" th:action="@{/nextStep}">
+            <input type="hidden" th:value="${currentStep.getId()}" th:name="stepId"/>
             <table>
                 <tr th:each="choice, iter : ${currentStep.getChoices()}" >
                     <td>
                         <div style="margin:10px">
                             <input th:id="'choice'+ ${iter.index}" th:name="choiceId" th:value="${iter.index}"
+                                   th:required="required"
                                    type="radio"/>
                             <label th:for="'choice'+ ${iter.index}" th:text="${choice.getDescription()}"/>
                         </div>

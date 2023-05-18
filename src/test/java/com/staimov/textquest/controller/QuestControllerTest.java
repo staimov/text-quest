@@ -3,6 +3,7 @@ package com.staimov.textquest.controller;
 import com.staimov.textquest.model.QuestModel;
 import com.staimov.textquest.model.QuestStep;
 import com.staimov.textquest.service.QuestService;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -28,46 +29,72 @@ class QuestControllerTest {
     private QuestService service;
 
     @Test
-    void testStartQuest() throws Exception {
+    void startQuestShouldRedirectToCurrentStepView() throws Exception {
         mockMvc.perform(get("/startQuest").accept(MediaType.TEXT_HTML))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/currentStep"));
     }
 
     @Test
-    void testNextStepWithCorrectChoiceId() throws Exception {
-        mockMvc.perform(get("/nextStep").param("choiceId", "0")
+    void nextStepWithCorrectParamsAndIfQuestIsStartedShouldRedirectToCurrentStepView() throws Exception {
+        doReturn(true).when(service).isQuestStarted();
+        doReturn(new QuestStep()).when(service).getCurrentQuestStep();
+
+        mockMvc.perform(get("/nextStep")
+                        .param("choiceId", "0")
+                        .param("stepId", "0")
                         .accept(MediaType.TEXT_HTML))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/currentStep"));
     }
 
     @Test
-    void testNextStepWithEmptyChoiceId() throws Exception {
+    void nextStepWithEmptyParamsShouldLeadToError4xx() throws Exception {
         mockMvc.perform(get("/nextStep").accept(MediaType.TEXT_HTML))
                 .andExpect(status().is4xxClientError());
     }
 
     @Test
-    void testNextStepIfServiceThrowsIllegalStateException() {
-        doThrow(IllegalStateException.class).when(service).makeQuestChoice(anyInt());
+    void nextStepWithNoChoiceIdShouldLeadToError4xx() throws Exception {
+        mockMvc.perform(get("/nextStep")
+                        .param("stepId", "0")
+                        .accept(MediaType.TEXT_HTML))
+                .andExpect(status().is4xxClientError());
+    }
 
+    @Test
+    void nextStepWithNoStepIdShouldLeadToError4xx() throws Exception {
+        mockMvc.perform(get("/nextStep")
+                        .param("choiceId", "0")
+                        .accept(MediaType.TEXT_HTML))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    void nextStepIfQuestNotStartedThrowsIllegalStateException() {
         assertThatThrownBy(
-                () -> mockMvc.perform(get("/nextStep").param("choiceId", "0")))
+                () -> mockMvc.perform(get("/nextStep")
+                        .param("choiceId", "0")
+                        .param("stepId", "0")))
             .hasCauseInstanceOf(IllegalStateException.class);
     }
 
     @Test
-    void testNextStepIfServiceThrowsIndexOutOfBoundsException() {
+    void nextStepWithChoiceOutOfBoundsShouldThrowIndexOutOfBoundsException() {
+        doReturn(true).when(service).isQuestStarted();
+        doReturn(new QuestStep()).when(service).getCurrentQuestStep();
         doThrow(IndexOutOfBoundsException.class).when(service).makeQuestChoice(anyInt());
+        long stepId = service.getCurrentQuestStep().getId();
 
         assertThatThrownBy(
-                () -> mockMvc.perform(get("/nextStep").param("choiceId", "0")))
+                () -> mockMvc.perform(get("/nextStep")
+                        .param("choiceId", "0")
+                        .param("stepId", String.valueOf(stepId))))
             .hasCauseInstanceOf(IndexOutOfBoundsException.class);
     }
 
     @Test
-    public void testWelcome() throws Exception {
+    public void welcomeShouldOpenWelcomeViewWithStatusOk() throws Exception {
         QuestModel questModel = new QuestModel();
 
         doReturn(questModel).when(service).getQuestModel();
@@ -79,13 +106,13 @@ class QuestControllerTest {
     }
 
     @Test
-    public void testCurrentStep() throws Exception {
+    public void currentStepShouldOpenCurrentStepViewWithStatusOk() throws Exception {
         QuestStep currentStep = new QuestStep();
         QuestModel questModel = new QuestModel();
         questModel.setName("foo");
 
         doReturn(questModel).when(service).getQuestModel();
-        doReturn(currentStep).when(service).getCurentQuestStep();
+        doReturn(currentStep).when(service).getCurrentQuestStep();
 
         mockMvc.perform(get("/currentStep").accept(MediaType.TEXT_HTML))
                 .andExpect(status().isOk())

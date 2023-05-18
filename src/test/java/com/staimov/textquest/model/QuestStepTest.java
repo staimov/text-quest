@@ -2,6 +2,10 @@ package com.staimov.textquest.model;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class QuestStepTest {
@@ -63,5 +67,20 @@ class QuestStepTest {
     @Test
     void stepShouldBeNeutralByDefault() {
         assertEquals(StepType.NEUTRAL, step.getType());
+    }
+
+    @Test
+    void newStepsShouldHaveAutoincrementedIds() {
+        List<QuestStep> steps = new ArrayList<>();
+
+        for (int i = 0; i < 10; ++i) {
+            steps.add(new QuestStep());
+        }
+
+        long firstId = steps.get(0).getId();
+
+        for (int i = 0; i < 10; ++i) {
+            assertEquals(firstId + i, steps.get(i).getId());
+        }
     }
 }

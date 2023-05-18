@@ -21,6 +21,6 @@ class EmptyQuestServiceTest {
     void initModelShouldSetCurrentStepToNull() {
         service.initModel();
 
-        assertNull(service.getCurentQuestStep());
+        assertNull(service.getCurrentQuestStep());
     }
 }

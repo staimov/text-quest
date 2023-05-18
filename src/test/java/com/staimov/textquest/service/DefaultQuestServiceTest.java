@@ -71,7 +71,7 @@ class DefaultQuestServiceTest {
 
         service.makeQuestChoice(1); //next
 
-        assertSame(next, service.getCurentQuestStep());
+        assertSame(next, service.getCurrentQuestStep());
     }
 
     @Test
@@ -87,7 +87,7 @@ class DefaultQuestServiceTest {
         service.makeQuestChoice(1); //next
 
         assertEquals(root.getChoices().get(1).getDescription(),
-                service.getCurentQuestStep().getPreviousChoiceDescription());
+                service.getCurrentQuestStep().getPreviousChoiceDescription());
     }
 
     @Test
@@ -97,7 +97,7 @@ class DefaultQuestServiceTest {
 
         service.restartQuest();
 
-        assertSame(root, service.getCurentQuestStep());
+        assertSame(root, service.getCurrentQuestStep());
     }
 
     @Test
@@ -108,7 +108,7 @@ class DefaultQuestServiceTest {
 
         service.resetQuest();
 
-        assertNull(service.getCurentQuestStep());
+        assertNull(service.getCurrentQuestStep());
     }
 
     @Test
@@ -151,6 +151,6 @@ class DefaultQuestServiceTest {
     void initModelShouldSetCurrentStepToNull() {
         service.initModel();
 
-        assertNull(service.getCurentQuestStep());
+        assertNull(service.getCurrentQuestStep());
     }
 }

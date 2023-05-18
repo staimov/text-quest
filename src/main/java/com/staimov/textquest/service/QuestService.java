@@ -16,5 +16,7 @@ public interface QuestService {
 
     void makeQuestChoice(int choiceId);
 
-    QuestStep getCurentQuestStep();
+    QuestStep getCurrentQuestStep();
+
+    boolean isQuestStarted();
 }
