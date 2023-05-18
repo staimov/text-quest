@@ -2,23 +2,33 @@ package com.staimov.textquest.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class QuestStep {
+    private static final AtomicInteger count = new AtomicInteger(0);
+    private long id;
     private String description;
     private String previousChoiceDescription;
     private StepType type = StepType.NEUTRAL;
     private List<QuestChoice> choices = new ArrayList<>();
 
     public QuestStep() {
+        id = count.getAndIncrement();
     }
 
     public QuestStep(String description) {
         this.description = description;
+        id = count.getAndIncrement();
     }
 
     public QuestStep(String description, StepType type) {
         this.description = description;
         this.type = type;
+        id = count.getAndIncrement();
+    }
+
+    public long getId() {
+        return id;
     }
 
     public StepType getType() {
