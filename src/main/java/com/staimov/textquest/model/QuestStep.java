@@ -6,11 +6,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class QuestStep {
     private static final AtomicInteger count = new AtomicInteger(0);
-    private long id;
+    private final long id;
     private String description;
     private String previousChoiceDescription;
     private StepType type = StepType.NEUTRAL;
-    private List<QuestChoice> choices = new ArrayList<>();
+    private final List<QuestChoice> choices = new ArrayList<>();
 
     public QuestStep() {
         id = count.getAndIncrement();
