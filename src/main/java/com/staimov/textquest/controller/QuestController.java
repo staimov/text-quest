@@ -23,8 +23,13 @@ public class QuestController {
     }
 
     @GetMapping("/welcome")
-    public String welcome(Model model, HttpSession session, HttpServletRequest request) {
+    public String welcome(@RequestParam(value = "newName", required = false) String newName,
+                          Model model, HttpSession session, HttpServletRequest request) {
         logger.debug("welcome path requested");
+
+        if (newName != null && !newName.isBlank() && newName != service.getPlayerName()) {
+            service.setPlayerName(newName);
+        }
 
         service.resetQuest();
         model.addAttribute("questModel", service.getQuestModel());
@@ -33,6 +38,7 @@ public class QuestController {
         model.addAttribute("startCount", service.getStartCount());
         model.addAttribute("completeCount", service.getCompleteCount());
         model.addAttribute("playerName", service.getPlayerName());
+
         return "welcome";
     }
 
@@ -41,6 +47,7 @@ public class QuestController {
         logger.debug("startQuest path requested");
 
         service.restartQuest();
+
         return "redirect:/currentStep";
     }
 
@@ -73,6 +80,7 @@ public class QuestController {
         model.addAttribute("startCount", service.getStartCount());
         model.addAttribute("completeCount", service.getCompleteCount());
         model.addAttribute("playerName", service.getPlayerName());
+
         return "currentStep";
     }
 }
