@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class CustomErrorController implements ErrorController {
-
     private static final Logger logger = LoggerFactory.getLogger(CustomErrorController.class);
 
     @RequestMapping("/error")
