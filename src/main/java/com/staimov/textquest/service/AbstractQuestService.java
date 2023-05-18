@@ -6,10 +6,15 @@ import com.staimov.textquest.model.QuestStep;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public abstract class AbstractQuestService implements QuestService {
     private static final Logger logger = LoggerFactory.getLogger(AbstractQuestService.class);
 
     private QuestModel questModel;
+    private final AtomicInteger startCount = new AtomicInteger(0);
+    private final AtomicInteger completeCount = new AtomicInteger(0);
+    private String playerName = "Homer";
 
     public AbstractQuestService(QuestModel questModel) {
         this.questModel = questModel;
@@ -17,6 +22,25 @@ public abstract class AbstractQuestService implements QuestService {
 
     @Override
     public abstract void initModel();
+
+    @Override
+    public synchronized int getStartCount() {
+        return startCount.get();
+    }
+
+    @Override
+    public synchronized int getCompleteCount() {
+        return completeCount.get();
+    }
+
+    @Override
+    public synchronized String getPlayerName() {
+        return playerName;
+    }
+
+    public synchronized void setPlayerName(String playerName) {
+        this.playerName = playerName;
+    }
 
     public synchronized QuestModel getQuestModel() {
         return questModel;
@@ -29,6 +53,7 @@ public abstract class AbstractQuestService implements QuestService {
 
     public synchronized void restartQuest() {
         questModel.restart();
+        startCount.incrementAndGet();
         logger.info("Quest started: {}", questModel.getName());
     }
 
@@ -57,6 +82,10 @@ public abstract class AbstractQuestService implements QuestService {
         questModel.getCurrentStep().setPreviousChoiceDescription(choiceMade.getDescription());
 
         logger.info("Choice is made: {}", questModel.getCurrentStep().getPreviousChoiceDescription());
+
+        if (questModel.isFinal()) {
+            completeCount.incrementAndGet();
+        }
 
         if (questModel.isPositiveFinal()) {
             logger.info("The quest is completed with a positive outcome");

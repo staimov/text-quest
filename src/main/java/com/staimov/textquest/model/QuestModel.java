@@ -5,7 +5,6 @@ public class QuestModel {
     private QuestStep currentStep;
     private String name;
     private String description;
-    private String heroName;
 
     public String getName() {
         return name;
@@ -29,14 +28,6 @@ public class QuestModel {
 
     public void reset() {
         currentStep = null;
-    }
-
-    public String getHeroName() {
-        return heroName;
-    }
-
-    public void setHeroName(String heroName) {
-        this.heroName = heroName;
     }
 
     public QuestStep getRoot() {

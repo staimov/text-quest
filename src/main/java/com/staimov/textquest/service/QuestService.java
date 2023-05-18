@@ -19,4 +19,12 @@ public interface QuestService {
     QuestStep getCurrentQuestStep();
 
     boolean isQuestStarted();
+
+    int getStartCount();
+
+    int getCompleteCount();
+
+    String getPlayerName();
+
+    void setPlayerName(String playerName);
 }
