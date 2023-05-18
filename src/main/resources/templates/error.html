@@ -25,5 +25,13 @@
       <a style="margin:10px" href="/" class="btn btn-primary">В начало</a>
     </div>
   </div>
+
+  <div th:insert="~{fragments/footer :: footer(
+        playerName=${null},
+        completeCount=${null},
+        startCount=${null},
+        sessionId=${sessionId},
+        clientIp=${clientIp})}"/>
+
 </body>
 </html>

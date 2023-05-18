@@ -24,5 +24,12 @@
             <a style="margin:10px" th:href="@{/startQuest}" class="btn btn-primary">Начать</a>
         </div>
     </div>
+
+    <div th:insert="~{fragments/footer :: footer(
+        playerName=${playerName},
+        completeCount=${completeCount},
+        startCount=${startCount},
+        sessionId=${sessionId},
+        clientIp=${clientIp})}"/>
 </body>
 </html>

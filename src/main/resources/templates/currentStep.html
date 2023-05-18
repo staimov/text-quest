@@ -53,5 +53,13 @@
             <button style="margin:10px" class="btn btn-primary" type="submit">Выбрать</button>
         </form>
     </div>
+
+    <div th:insert="~{fragments/footer :: footer(
+        playerName=${playerName},
+        completeCount=${completeCount},
+        startCount=${startCount},
+        sessionId=${sessionId},
+        clientIp=${clientIp})}"/>
+
 </body>
 </html>

@@ -1,6 +1,8 @@
 package com.staimov.textquest.controller;
 
 import com.staimov.textquest.service.QuestService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +23,16 @@ public class QuestController {
     }
 
     @GetMapping("/welcome")
-    public String welcome(Model model) {
+    public String welcome(Model model, HttpSession session, HttpServletRequest request) {
         logger.debug("welcome path requested");
 
         service.resetQuest();
         model.addAttribute("questModel", service.getQuestModel());
+        model.addAttribute("sessionId", session.getId());
+        model.addAttribute("clientIp", request.getRemoteAddr());
+        model.addAttribute("startCount", service.getStartCount());
+        model.addAttribute("completeCount", service.getCompleteCount());
+        model.addAttribute("playerName", service.getPlayerName());
         return "welcome";
     }
 
@@ -56,11 +63,16 @@ public class QuestController {
     }
 
     @GetMapping("/currentStep")
-    public String currentStep(Model model) {
+    public String currentStep(Model model, HttpSession session, HttpServletRequest request) {
         logger.debug("currentStep path requested");
 
         model.addAttribute("questName", service.getQuestModel().getName());
         model.addAttribute("currentStep", service.getCurrentQuestStep());
+        model.addAttribute("sessionId", session.getId());
+        model.addAttribute("clientIp", request.getRemoteAddr());
+        model.addAttribute("startCount", service.getStartCount());
+        model.addAttribute("completeCount", service.getCompleteCount());
+        model.addAttribute("playerName", service.getPlayerName());
         return "currentStep";
     }
 }

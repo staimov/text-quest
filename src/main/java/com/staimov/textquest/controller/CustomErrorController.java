@@ -2,6 +2,7 @@ package com.staimov.textquest.controller;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.servlet.error.ErrorController;
@@ -15,7 +16,7 @@ public class CustomErrorController implements ErrorController {
     private static final Logger logger = LoggerFactory.getLogger(CustomErrorController.class);
 
     @RequestMapping("/error")
-    public String handleError(HttpServletRequest request, Model model) {
+    public String handleError(HttpServletRequest request, Model model, HttpSession session) {
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
         Exception e = (Exception) request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
 
@@ -39,6 +40,8 @@ public class CustomErrorController implements ErrorController {
         model.addAttribute("message", message);
         model.addAttribute("status", status);
         model.addAttribute("exception", e);
+        model.addAttribute("sessionId", session.getId());
+        model.addAttribute("clientIp", request.getRemoteAddr());
 
         return "error";
     }
