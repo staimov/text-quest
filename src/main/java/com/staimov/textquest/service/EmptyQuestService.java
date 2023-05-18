@@ -12,7 +12,7 @@ public class EmptyQuestService extends AbstractQuestService {
     }
 
     @Override
-    public void initModel() {
+    public synchronized void initModel() {
         logger.info("Quest init: {}", getClass().getSimpleName());
 
         getQuestModel().setRoot(null);

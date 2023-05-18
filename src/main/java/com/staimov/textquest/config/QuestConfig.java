@@ -12,7 +12,9 @@ public class QuestConfig {
     @Bean
     @SessionScope
     public QuestService selectedQuestService() {
-        return new DefaultQuestService(new QuestModel());
-        //return new EmptyQuestService(new QuestModel());
+        QuestService service = new DefaultQuestService(new QuestModel());
+        //QuestService service = new EmptyQuestService(new QuestModel());
+        service.initModel();
+        return service ;
     }
 }

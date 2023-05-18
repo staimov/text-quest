@@ -5,9 +5,8 @@ import com.staimov.textquest.model.QuestModel;
 import com.staimov.textquest.model.QuestStep;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
 
-public abstract class AbstractQuestService implements QuestService, InitializingBean {
+public abstract class AbstractQuestService implements QuestService {
     private static final Logger logger = LoggerFactory.getLogger(AbstractQuestService.class);
 
     private QuestModel questModel;
@@ -19,32 +18,26 @@ public abstract class AbstractQuestService implements QuestService, Initializing
     @Override
     public abstract void initModel();
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        logger.debug("In afterPropertiesSet()");
-        initModel();
-    }
-
-    public QuestModel getQuestModel() {
+    public synchronized QuestModel getQuestModel() {
         return questModel;
     }
 
     @Override
-    public void setQuestModel(QuestModel questModel) {
+    public synchronized void setQuestModel(QuestModel questModel) {
         this.questModel = questModel;
     }
 
-    public void restartQuest() {
+    public synchronized void restartQuest() {
         questModel.restart();
         logger.info("Quest started: {}", questModel.getName());
     }
 
-    public void resetQuest() {
+    public synchronized void resetQuest() {
         questModel.reset();
         logger.debug("Quest reset");
     }
 
-    public void makeQuestChoice(int choiceId) {
+    public synchronized void makeQuestChoice(int choiceId) {
         logger.debug("Make quest choice (choiceId = {})", choiceId);
 
         if (questModel.getCurrentStep() == null) {
@@ -76,7 +69,7 @@ public abstract class AbstractQuestService implements QuestService, Initializing
         }
     }
 
-    public QuestStep getCurentQuestStep() {
+    public synchronized QuestStep getCurentQuestStep() {
         return questModel.getCurrentStep();
     }
 }

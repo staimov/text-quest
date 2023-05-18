@@ -14,7 +14,7 @@ public class DefaultQuestService extends AbstractQuestService {
         super(model);
     }
 
-    public void initModel() {
+    public synchronized void initModel() {
         logger.info("Quest init: {}", getClass().getSimpleName());
 
         getQuestModel().setName("НЛО");
