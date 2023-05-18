@@ -26,9 +26,9 @@
   </header>
 
   <script th:if="${onClickConfirm}">
-    document.getElementById("headerLink").addEventListener("click", function(){
+    document.getElementById('headerLink').addEventListener('click', function(e){
       if (!(confirm('Вы уверены, что хотите начать с начала?')))
-        return false;
+        e.preventDefault();
     });
   </script>
 
