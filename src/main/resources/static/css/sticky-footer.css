@@ -5,12 +5,12 @@ html {
     min-height: 100%;
 }
 body {
-    margin-bottom: 150px; /* Margin bottom by footer height */
+    margin-bottom: 140px; /* Margin bottom by footer height */
 }
 .footer {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 150px; /* Set the fixed height of the footer here */
-    background-color: #000000;
+    height: 140px; /* Set the fixed height of the footer here */
+    background-color: #101010;
 }

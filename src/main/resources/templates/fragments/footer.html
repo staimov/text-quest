@@ -11,7 +11,7 @@
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
         crossorigin="anonymous">
 
-  <title>Header</title>
+  <title>Footer</title>
 </head>
 <body>
   <!-- Bootstrap JS -->
@@ -20,18 +20,25 @@
           crossorigin="anonymous"></script>
 
   <div th:fragment="footer(playerName, completeCount, startCount, sessionId, clientIp)">
-
-    <footer class="footer">
+    <footer class="footer border-top" >
       <link href="./css/sticky-footer.css" rel="stylesheet">
-      <div class="container">
-        <p th:if="${playerName != null}" style="margin: 10px" class="text-muted" th:text="'Твое имя: ' + ${playerName}"/>
-        <p th:if="${completeCount != null && startCount != null}" style="margin: 10px" class="text-muted"
-           th:text="'Игр завершено: ' + ${completeCount} + ' из ' + ${startCount}"/>
-        <p th:if="${sessionId != null}" style="margin: 10px" class="text-muted" th:text="'Id сессии: ' + ${sessionId}"/>
-        <p th:if="${clientIp != null}" style="margin: 10px" class="text-muted" th:text="'IP-адрес: ' + ${clientIp}"/>
+      <div th:if="${playerName != null}" class="row mt-3 ms-3 mb-1">
+        <div class="text-muted col-1 text-truncate">Твое имя:</div>
+        <div class="col-11 text-truncate" th:text="${playerName}"/>
+      </div>
+      <div th:if="${completeCount != null && startCount != null}" class="row ms-3 my-1">
+        <div class="text-muted col-1 text-truncate">Игр завершено:</div>
+        <div class="col-11 text-truncate" th:text="${completeCount} + ' из ' + ${startCount}"/>
+      </div>
+      <div th:if="${sessionId != null}" class="row ms-3 my-1">
+        <div class="text-muted col-1 text-truncate">Id сессии:</div>
+        <div class="col-11 text-truncate" th:text="${sessionId}"/>
+      </div>
+      <div th:if="${sessionId != null}" class="row mb-3 ms-3 mt-1">
+        <div class="text-muted col-1 text-truncate" >IP-адрес:</div>
+        <div class="col-11 text-truncate" th:text="${clientIp}"/>
       </div>
     </footer>
-
   </div>
 </body>
 
