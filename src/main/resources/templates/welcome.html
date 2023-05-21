@@ -24,22 +24,21 @@
     <div th:insert="~{fragments/header :: header(questName=${questModel.getName()}, onClickConfirm=${false})}"/>
 
     <div class="container d-flex flex-column">
-        <form action="#">
-            <div class="mb-3 row">
-                <label for="playerNameInput" class="col-1 col-form-label">Твое имя</label>
-                <div class="col-3">
-                    <input id="playerNameInput" placeholder="Твое имя" class="form-control"
-                           type="text" th:value="${playerName}" th:name="newName">
+        <div class="mb-5">
+            <form action="#">
+                <div class="mb-3 row">
+                    <label for="playerNameInput" class="col-1 col-form-label text-truncate">Твое имя</label>
+                    <div class="col-3">
+                        <input id="playerNameInput" placeholder="Твое имя" class="form-control"
+                               type="text" th:value="${playerName}" th:name="newName">
+                    </div>
+                    <button class="btn btn-secondary col-1 text-truncate" type="submit">Изменить</button>
                 </div>
-                <button class="btn btn-secondary col-1 " type="submit">Изменить</button>
-            </div>
-        </form>
-    </div>
-    <br>
-    <div class="container d-flex flex-column">
-        <p th:text="${questModel.getDescription()}"/>
-        <div>
-            <a style="margin:10px" th:href="@{/startQuest}" class="btn btn-primary">Начать</a>
+            </form>
+        </div>
+        <div class="mb-5" th:text="${questModel.getDescription()}"/>
+        <div class="mx-3">
+            <a th:href="@{/startQuest}" class="btn btn-primary">Начать</a>
         </div>
     </div>
 
