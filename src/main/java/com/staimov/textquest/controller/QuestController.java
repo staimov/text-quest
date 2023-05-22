@@ -27,12 +27,14 @@ public class QuestController {
                           Model model, HttpSession session, HttpServletRequest request) {
         logger.debug("welcome path requested");
 
-        if (newName != null && !newName.isBlank() && newName != service.getPlayerName()) {
+        if (newName != null && !newName.isBlank()
+                && !newName.equals(service.getPlayerName())) {
             service.setPlayerName(newName);
         }
 
         service.resetQuest();
-        model.addAttribute("questModel", service.getQuestModel());
+        model.addAttribute("questName", service.getQuestName());
+        model.addAttribute("questDescription", service.getQuestDescription());
         model.addAttribute("sessionId", session.getId());
         model.addAttribute("clientIp", request.getRemoteAddr());
         model.addAttribute("startCount", service.getStartCount());
@@ -73,7 +75,7 @@ public class QuestController {
     public String currentStep(Model model, HttpSession session, HttpServletRequest request) {
         logger.debug("currentStep path requested");
 
-        model.addAttribute("questName", service.getQuestModel().getName());
+        model.addAttribute("questName", service.getQuestName());
         model.addAttribute("currentStep", service.getCurrentQuestStep());
         model.addAttribute("sessionId", session.getId());
         model.addAttribute("clientIp", request.getRemoteAddr());

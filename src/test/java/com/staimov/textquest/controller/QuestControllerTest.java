@@ -5,7 +5,6 @@ import com.staimov.textquest.model.QuestStep;
 import com.staimov.textquest.service.QuestService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.mockito.AdditionalMatchers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -129,23 +128,21 @@ class QuestControllerTest {
 
     @Test
     public void welcomeShouldOpenWelcomeViewWithStatusOk() throws Exception {
-        QuestModel questModel = new QuestModel();
-
-        doReturn(questModel).when(service).getQuestModel();
+        doReturn("foo").when(service).getQuestName();
+        doReturn("bar").when(service).getQuestDescription();
 
         mockMvc.perform(get("/welcome").accept(MediaType.TEXT_HTML))
                 .andExpect(status().isOk())
                 .andExpect(view().name("welcome"))
-                .andExpect(model().attribute("questModel", questModel));
+                .andExpect(model().attribute("questName", "foo"))
+                .andExpect(model().attribute("questDescription", "bar"));
     }
 
     @Test
     public void currentStepShouldOpenCurrentStepViewWithStatusOk() throws Exception {
         QuestStep currentStep = new QuestStep();
-        QuestModel questModel = new QuestModel();
-        questModel.setName("foo");
 
-        doReturn(questModel).when(service).getQuestModel();
+        doReturn("foo").when(service).getQuestName();
         doReturn(currentStep).when(service).getCurrentQuestStep();
 
         mockMvc.perform(get("/currentStep").accept(MediaType.TEXT_HTML))

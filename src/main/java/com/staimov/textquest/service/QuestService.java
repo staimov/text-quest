@@ -1,14 +1,9 @@
 package com.staimov.textquest.service;
 
-import com.staimov.textquest.model.QuestModel;
 import com.staimov.textquest.model.QuestStep;
 
 public interface QuestService {
     void initModel();
-
-    QuestModel getQuestModel();
-
-    void setQuestModel(QuestModel questModel);
 
     void restartQuest();
 
@@ -27,4 +22,13 @@ public interface QuestService {
     String getPlayerName();
 
     void setPlayerName(String playerName);
+
+    String getQuestName();
+
+    String getQuestDescription();
+
+    QuestStep getQuestRoot();
+
+     void setQuestRoot(QuestStep root);
+
 }

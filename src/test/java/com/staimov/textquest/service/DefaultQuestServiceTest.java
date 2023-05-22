@@ -34,7 +34,7 @@ class DefaultQuestServiceTest {
 
     @Test
     void makeQuestChoiceForChoiceOutOfBoundsShouldThrowIndexOutOfBoundsException() {
-        service.getQuestModel().setRoot(new QuestStep());
+        service.setQuestRoot(new QuestStep());
         service.restartQuest();
 
         assertThrows(IndexOutOfBoundsException.class,
@@ -43,7 +43,7 @@ class DefaultQuestServiceTest {
 
     @Test
     void makeQuestChoiceForChoiceOutOfBoundsShouldThrowExceptionWithRelevantMessage() {
-        service.getQuestModel().setRoot(new QuestStep());
+        service.setQuestRoot(new QuestStep());
         service.restartQuest();
         int index = 2;
         String expectedMessage  = String.format("Choice id %d is out of bounds", index);
@@ -66,7 +66,7 @@ class DefaultQuestServiceTest {
         QuestStep other = new QuestStep("other");
         root.getChoices().add(new QuestChoice("select other", other)); //0
         root.getChoices().add(new QuestChoice("select next", next)); //1
-        service.getQuestModel().setRoot(root);
+        service.setQuestRoot(root);
         service.restartQuest();
 
         service.makeQuestChoice(1); //next
@@ -81,7 +81,7 @@ class DefaultQuestServiceTest {
         QuestStep other = new QuestStep("other");
         root.getChoices().add(new QuestChoice("select other", other)); //0
         root.getChoices().add(new QuestChoice("select next", next)); //1
-        service.getQuestModel().setRoot(root);
+        service.setQuestRoot(root);
         service.restartQuest();
 
         service.makeQuestChoice(1); //next
@@ -93,7 +93,7 @@ class DefaultQuestServiceTest {
     @Test
     void restartQuestShouldSetCurrentStepToRoot() {
         QuestStep root = new QuestStep();
-        service.getQuestModel().setRoot(root);
+        service.setQuestRoot(root);
 
         service.restartQuest();
 
@@ -103,7 +103,7 @@ class DefaultQuestServiceTest {
     @Test
     void resetQuestShouldSetCurrentStepToNull() {
         QuestStep root = new QuestStep();
-        service.getQuestModel().setRoot(root);
+        service.setQuestRoot(root);
         service.restartQuest();
 
         service.resetQuest();
@@ -112,24 +112,24 @@ class DefaultQuestServiceTest {
     }
 
     @Test
-    void restartQuestShouldMakeModelStarted() {
+    void restartQuestShouldMakeQuestStarted() {
         QuestStep root = new QuestStep();
-        service.getQuestModel().setRoot(root);
+        service.setQuestRoot(root);
 
         service.restartQuest();
 
-        assertTrue(service.getQuestModel().isStarted());
+        assertTrue(service.isQuestStarted());
     }
 
     @Test
-    void resetQuestShouldMakeModelNotStarted() {
+    void resetQuestShouldMakeQuestNotStarted() {
         QuestStep root = new QuestStep();
-        service.getQuestModel().setRoot(root);
+        service.setQuestRoot(root);
         service.restartQuest();
 
         service.resetQuest();
 
-        assertFalse(service.getQuestModel().isStarted());
+        assertFalse(service.isQuestStarted());
     }
 
     @Test
@@ -137,10 +137,10 @@ class DefaultQuestServiceTest {
         service.initModel();
 
         assertAll(
-                () -> assertNotNull(service.getQuestModel().getRoot()),
-                () -> assertTrue(service.getQuestModel().getRoot().getChoices().size() > 0),
+                () -> assertNotNull(service.getQuestRoot()),
+                () -> assertTrue(service.getQuestRoot().getChoices().size() > 0),
                 () -> {
-                    for (QuestChoice choice: service.getQuestModel().getRoot().getChoices()) {
+                    for (QuestChoice choice: service.getQuestRoot().getChoices()) {
                         assertNotNull(choice.getNextStep());
                     }
                 }

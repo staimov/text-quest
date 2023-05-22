@@ -14,7 +14,7 @@ class EmptyQuestServiceTest {
     void initModelShouldSetRootToNull() {
         service.initModel();
 
-        assertNull(service.getQuestModel().getRoot());
+        assertNull(service.getQuestRoot());
     }
 
     @Test

@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public abstract class AbstractQuestService implements QuestService {
     private static final Logger logger = LoggerFactory.getLogger(AbstractQuestService.class);
 
-    private QuestModel questModel;
+    final private QuestModel questModel;
     private final AtomicInteger startCount = new AtomicInteger(0);
     private final AtomicInteger completeCount = new AtomicInteger(0);
     private String playerName = "Homer";
@@ -38,30 +38,29 @@ public abstract class AbstractQuestService implements QuestService {
         return playerName;
     }
 
+    @Override
     public synchronized void setPlayerName(String playerName) {
         this.playerName = playerName;
     }
 
-    public synchronized QuestModel getQuestModel() {
+    protected QuestModel getQuestModel() {
         return questModel;
     }
 
     @Override
-    public synchronized void setQuestModel(QuestModel questModel) {
-        this.questModel = questModel;
-    }
-
     public synchronized void restartQuest() {
         questModel.restart();
         startCount.incrementAndGet();
         logger.info("Quest started: {}", questModel.getName());
     }
 
+    @Override
     public synchronized void resetQuest() {
         questModel.reset();
         logger.debug("Quest reset");
     }
 
+    @Override
     public synchronized void makeQuestChoice(int choiceId) {
         logger.debug("Make quest choice (choiceId = {})", choiceId);
 
@@ -98,11 +97,33 @@ public abstract class AbstractQuestService implements QuestService {
         }
     }
 
+    @Override
     public synchronized QuestStep getCurrentQuestStep() {
         return questModel.getCurrentStep();
     }
 
+    @Override
     public synchronized boolean isQuestStarted() {
         return getCurrentQuestStep() != null;
+    }
+
+    @Override
+    public synchronized String getQuestName() {
+        return questModel.getName();
+    }
+
+    @Override
+    public synchronized String getQuestDescription() {
+        return questModel.getDescription();
+    }
+
+    @Override
+    public synchronized QuestStep getQuestRoot() {
+        return questModel.getRoot();
+    }
+
+    @Override
+    public void setQuestRoot(QuestStep root) {
+        questModel.setRoot(root);
     }
 }

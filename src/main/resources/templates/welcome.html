@@ -21,7 +21,7 @@
             integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
             crossorigin="anonymous"></script>
 
-    <div th:insert="~{fragments/header :: header(questName=${questModel.getName()}, onClickConfirm=${false})}"/>
+    <div th:insert="~{fragments/header :: header(questName=${questName}, onClickConfirm=${false})}"/>
 
     <div class="container d-flex flex-column">
         <div class="mb-5">
@@ -36,7 +36,7 @@
                 </div>
             </form>
         </div>
-        <div class="mb-5" th:text="${questModel.getDescription()}"/>
+        <div class="mb-5" th:text="${questDescription}"/>
         <div class="mx-3">
             <a th:href="@{/startQuest}" class="btn btn-primary">Начать</a>
         </div>
