@@ -23,10 +23,10 @@
   <div th:insert="~{fragments/header :: header(questName=${null}, onClickConfirm=${false})}"/>
 
   <div class="container d-flex flex-column">
-    <h4 th:text="${message}"/>
-    <h6 th:if="${status != null}" th:text="'HTTP Status: ' + ${status}"/>
-    <h6 th:if="${exception != null}" th:text="'Exception: ' + ${exception}"/>
-    <div>
+    <h4 class="mb-3" th:text="${message}"/>
+    <h6 class="mb-3" th:if="${status != null}" th:text="'HTTP Status: ' + ${status}"/>
+    <h6 class="mb-3" th:if="${exception != null}" th:text="'Exception: ' + ${exception}"/>
+    <div class="ms-3 mt-4">
       <a style="margin:10px" href="/" class="btn btn-primary">В начало</a>
     </div>
   </div>

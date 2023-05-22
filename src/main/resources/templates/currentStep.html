@@ -25,38 +25,44 @@
         onClickConfirm=${currentStep != null && !currentStep.isFinal()})}"/>
 
     <div class="container d-flex flex-column">
-        <p th:if="${currentStep != null && currentStep.getPreviousChoiceDescription() != null
+        <div class="mb-4" th:if="${currentStep != null && currentStep.getPreviousChoiceDescription() != null
            && !currentStep.getPreviousChoiceDescription().isEmpty()}"
            th:text="'Ты выбрал: ' + ${currentStep.getPreviousChoiceDescription()}"/>
 
-        <p th:text="${currentStep != null ? currentStep.getDescription() : 'Ничего не происходит...'}"/>
+        <div class="mb-3" th:text="${currentStep != null ? currentStep.getDescription() : 'Ничего не происходит...'}"/>
 
         <div th:if="${currentStep != null && currentStep.isFinal()}">
-            <span th:if="${currentStep.isPositiveFinal()}" class="badge text-bg-success rounded-pill">Положительный исход!</span>
-            <span th:if="${currentStep.isNegativeFinal()}" class="badge text-bg-danger rounded-pill">Отрицательный исход!</span>
-            <span th:if="${currentStep.isNeutralFinal()}" class="badge text-bg-secondary rounded-pill">Нейтральный исход.</span>
+            <div th:if="${currentStep.isPositiveFinal()}" class="badge text-bg-success rounded-pill">Положительный исход!</div>
+            <div th:if="${currentStep.isNegativeFinal()}" class="badge text-bg-danger rounded-pill">Отрицательный исход!</div>
+            <div th:if="${currentStep.isNeutralFinal()}" class="badge text-bg-secondary rounded-pill">Нейтральный исход.</div>
         </div>
 
-        <div th:if="${currentStep == null || currentStep.isFinal()}">
-            <a style="margin:10px" href="/" class="btn btn-primary">В начало</a>
+        <div th:if="${currentStep == null || currentStep.isFinal()}" class="ms-3 mt-4">
+            <a href="/" class="btn btn-primary">В начало</a>
         </div>
 
-        <form th:unless="${currentStep == null || currentStep.isFinal()}" th:action="@{/nextStep}">
-            <input type="hidden" th:value="${currentStep.getId()}" th:name="stepId"/>
-            <table>
-                <tr th:each="choice, iter : ${currentStep.getChoices()}" >
-                    <td>
-                        <div style="margin:10px">
-                            <input th:id="'choice'+ ${iter.index}" th:name="choiceId" th:value="${iter.index}"
-                                   th:required="required"
-                                   type="radio"/>
-                            <label th:for="'choice'+ ${iter.index}" th:text="${choice.getDescription()}"/>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-            <button style="margin:10px" class="btn btn-primary" type="submit">Выбрать</button>
-        </form>
+        <div>
+            <form th:unless="${currentStep == null || currentStep.isFinal()}" th:action="@{/nextStep}">
+                <input type="hidden" th:value="${currentStep.getId()}" th:name="stepId"/>
+                <table>
+                    <tr th:each="choice, iter : ${currentStep.getChoices()}" >
+                        <td>
+                            <div style="margin:10px">
+                                <input class="form-check-input"
+                                       th:id="'choice'+ ${iter.index}"
+                                       th:name="choiceId"
+                                       th:value="${iter.index}"
+                                       th:required="required"
+                                       type="radio"/>
+                                <label th:for="'choice'+ ${iter.index}" class="form-check-label"
+                                       th:text="${choice.getDescription()}"/>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <button class="btn btn-primary mt-3 ms-3" type="submit">Выбрать</button>
+            </form>
+        </div>
     </div>
 
     <div th:insert="~{fragments/footer :: footer(
