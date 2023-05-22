@@ -5,6 +5,8 @@ import com.staimov.textquest.model.QuestStep;
 import com.staimov.textquest.service.QuestService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.mockito.AdditionalMatchers;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -46,6 +48,38 @@ class QuestControllerTest {
                         .accept(MediaType.TEXT_HTML))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/currentStep"));
+    }
+
+    @Test
+    void nextStepWithCorrectParamsAndIfQuestIsStartedShouldCallMakeChoiceMethod() throws Exception {
+        doReturn(true).when(service).isQuestStarted();
+        QuestStep currentStep = new QuestStep();
+        long currentStepId = currentStep.getId();
+        int choiceId = 3;
+        doReturn(currentStep).when(service).getCurrentQuestStep();
+
+        mockMvc.perform(get("/nextStep")
+                        .param("choiceId", String.valueOf(choiceId))
+                        .param("stepId", String.valueOf(currentStepId))
+                        .accept(MediaType.TEXT_HTML));
+
+        Mockito.verify(service, Mockito.times(1)).makeQuestChoice(choiceId);
+    }
+
+    @Test
+    void nextStepWithNotRelevantStepIdShouldNotCallMakeChoiceMethod() throws Exception {
+        doReturn(true).when(service).isQuestStarted();
+        QuestStep currentStep = new QuestStep();
+        long currentStepId = currentStep.getId();
+        int choiceId = 3;
+        doReturn(currentStep).when(service).getCurrentQuestStep();
+
+        mockMvc.perform(get("/nextStep")
+                .param("choiceId", String.valueOf(choiceId))
+                .param("stepId", String.valueOf(currentStepId + 1))
+                .accept(MediaType.TEXT_HTML));
+
+        Mockito.verify(service, Mockito.never()).makeQuestChoice(anyInt());
     }
 
     @Test
