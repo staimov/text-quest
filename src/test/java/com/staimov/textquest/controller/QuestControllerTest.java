@@ -1,6 +1,5 @@
 package com.staimov.textquest.controller;
 
-import com.staimov.textquest.model.QuestModel;
 import com.staimov.textquest.model.QuestStep;
 import com.staimov.textquest.service.QuestService;
 import org.junit.jupiter.api.Disabled;
@@ -82,6 +81,36 @@ class QuestControllerTest {
     }
 
     @Test
+    void welcomeWithDifferentNewNameParamShouldCallSetPlayerNameMethod() throws Exception {
+        doReturn("bar").when(service).getPlayerName();
+
+        mockMvc.perform(get("/welcome")
+                .param("newName", "foo")
+                .accept(MediaType.TEXT_HTML));
+
+        Mockito.verify(service, Mockito.times(1)).setPlayerName("foo");
+    }
+
+    @Test
+    void welcomeWithNoNewNameParamShouldNotCallSetPlayerNameMethod() throws Exception {
+        mockMvc.perform(get("/welcome")
+                .accept(MediaType.TEXT_HTML));
+
+        Mockito.verify(service, Mockito.never()).setPlayerName(anyString());
+    }
+
+    @Test
+    void welcomeWithEqualNewNameParamShouldNotCallSetPlayerNameMethod() throws Exception {
+        doReturn("foo").when(service).getPlayerName();
+
+        mockMvc.perform(get("/welcome")
+                .param("newName", "foo")
+                .accept(MediaType.TEXT_HTML));
+
+        Mockito.verify(service, Mockito.never()).setPlayerName("foo");
+    }
+
+    @Test
     void nextStepWithEmptyParamsShouldLeadToError4xx() throws Exception {
         mockMvc.perform(get("/nextStep").accept(MediaType.TEXT_HTML))
                 .andExpect(status().is4xxClientError());
@@ -130,12 +159,23 @@ class QuestControllerTest {
     public void welcomeShouldOpenWelcomeViewWithStatusOk() throws Exception {
         doReturn("foo").when(service).getQuestName();
         doReturn("bar").when(service).getQuestDescription();
+        doReturn(22).when(service).getStartCount();
+        doReturn(11).when(service).getCompleteCount();
+        doReturn("baz").when(service).getPlayerName();
 
         mockMvc.perform(get("/welcome").accept(MediaType.TEXT_HTML))
                 .andExpect(status().isOk())
                 .andExpect(view().name("welcome"))
                 .andExpect(model().attribute("questName", "foo"))
-                .andExpect(model().attribute("questDescription", "bar"));
+                .andExpect(model().attribute("questDescription", "bar"))
+                .andExpect(model().attributeExists("sessionId"))
+                .andExpect(model().attributeExists("clientIp"))
+                .andExpect(model().attribute("startCount", 22))
+                .andExpect(model().attribute("completeCount", 11))
+                .andExpect(model().attribute("playerName", "baz"));
+
+
+
     }
 
     @Test
@@ -144,11 +184,19 @@ class QuestControllerTest {
 
         doReturn("foo").when(service).getQuestName();
         doReturn(currentStep).when(service).getCurrentQuestStep();
+        doReturn(22).when(service).getStartCount();
+        doReturn(11).when(service).getCompleteCount();
+        doReturn("baz").when(service).getPlayerName();
 
         mockMvc.perform(get("/currentStep").accept(MediaType.TEXT_HTML))
                 .andExpect(status().isOk())
                 .andExpect(view().name("currentStep"))
                 .andExpect(model().attribute("questName", "foo"))
-                .andExpect(model().attribute("currentStep", currentStep));
+                .andExpect(model().attribute("currentStep", currentStep))
+                .andExpect(model().attributeExists("sessionId"))
+                .andExpect(model().attributeExists("clientIp"))
+                .andExpect(model().attribute("startCount", 22))
+                .andExpect(model().attribute("completeCount", 11))
+                .andExpect(model().attribute("playerName", "baz"));
     }
 }

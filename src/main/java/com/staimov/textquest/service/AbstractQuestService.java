@@ -52,6 +52,9 @@ public abstract class AbstractQuestService implements QuestService {
         questModel.restart();
         startCount.incrementAndGet();
         logger.info("Quest started: {}", questModel.getName());
+        if (questModel.isFinal()) {
+            Complete();
+        }
     }
 
     @Override
@@ -83,8 +86,12 @@ public abstract class AbstractQuestService implements QuestService {
         logger.info("Choice is made: {}", questModel.getCurrentStep().getPreviousChoiceDescription());
 
         if (questModel.isFinal()) {
-            completeCount.incrementAndGet();
+            Complete();
         }
+    }
+
+    private void Complete() {
+        completeCount.incrementAndGet();
 
         if (questModel.isPositiveFinal()) {
             logger.info("The quest is completed with a positive outcome");

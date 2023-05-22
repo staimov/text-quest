@@ -153,4 +153,38 @@ class DefaultQuestServiceTest {
 
         assertNull(service.getCurrentQuestStep());
     }
+
+    @Test
+    void restartQuestShouldIncrementStartCount() {
+        int prevStartCount = service.getStartCount();
+
+        service.restartQuest();
+
+        assertEquals(prevStartCount + 1, service.getStartCount());
+    }
+
+    @Test
+    void restartOneStepQuestShouldIncrementCompleteCount() {
+        QuestStep root = new QuestStep();
+        service.setQuestRoot(root);
+        int prevCompleteCount = service.getCompleteCount();
+
+        service.restartQuest();
+
+        assertEquals(prevCompleteCount + 1, service.getCompleteCount());
+    }
+
+    @Test
+    void completeQuestShouldIncrementCompleteCount() {
+        QuestStep root = new QuestStep("root");
+        QuestStep next = new QuestStep("next");
+        root.getChoices().add(new QuestChoice("select next", next));
+        service.setQuestRoot(root);
+        int prevCompleteCount = service.getCompleteCount();
+        service.restartQuest();
+
+        service.makeQuestChoice(0);
+
+        assertEquals(prevCompleteCount + 1, service.getCompleteCount());
+    }
 }
