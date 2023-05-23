@@ -31,4 +31,5 @@ public interface QuestService {
 
      void setQuestRoot(QuestStep root);
 
+     void resetCounters();
 }

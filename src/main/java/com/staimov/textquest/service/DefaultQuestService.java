@@ -44,6 +44,7 @@ public class DefaultQuestService extends AbstractQuestService {
         step2.getChoices().add(new QuestChoice("Рассказать правду о себе", step3));
         step2.getChoices().add(new QuestChoice("Солгать о себе", step6));
 
+        resetCounters();
         getQuestModel().setRoot(step0);
         getQuestModel().setCurrentStep(null);
     }

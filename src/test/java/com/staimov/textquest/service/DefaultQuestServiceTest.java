@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DefaultQuestServiceTest {
     private final QuestService service =
-            new DefaultQuestService(new QuestModel());
+            new DefaultQuestService(new QuestModel("test"));
 
     @Test
     void makeQuestChoiceForNotStartedQuestShouldThrowIllegalStateException() {
@@ -186,5 +186,33 @@ class DefaultQuestServiceTest {
         service.makeQuestChoice(0);
 
         assertEquals(prevCompleteCount + 1, service.getCompleteCount());
+    }
+
+    @Test
+    void resetCountersShouldSetCountersToZero() {
+        QuestStep root = new QuestStep();
+        service.setQuestRoot(root);
+        service.restartQuest();
+
+        service.resetCounters();
+
+        assertAll(
+                () -> assertEquals(0, service.getStartCount()),
+                () -> assertEquals(0, service.getCompleteCount())
+        );
+    }
+
+    @Test
+    void initModelShouldSetCountersToZero() {
+        QuestStep root = new QuestStep();
+        service.setQuestRoot(root);
+        service.restartQuest();
+
+        service.initModel();
+
+        assertAll(
+                () -> assertEquals(0, service.getStartCount()),
+                () -> assertEquals(0, service.getCompleteCount())
+        );
     }
 }

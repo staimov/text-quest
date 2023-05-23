@@ -133,4 +133,10 @@ public abstract class AbstractQuestService implements QuestService {
     public void setQuestRoot(QuestStep root) {
         questModel.setRoot(root);
     }
+
+    @Override
+    public synchronized void resetCounters() {
+        startCount.set(0);
+        completeCount.set(0);
+    }
 }

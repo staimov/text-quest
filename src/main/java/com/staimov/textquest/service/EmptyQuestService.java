@@ -15,6 +15,7 @@ public class EmptyQuestService extends AbstractQuestService {
     public synchronized void initModel() {
         logger.info("Quest init: {}", getClass().getSimpleName());
 
+        resetCounters();
         getQuestModel().setRoot(null);
         getQuestModel().setCurrentStep(null);
     }
