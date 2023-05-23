@@ -24,7 +24,7 @@
       <link href="./css/sticky-footer.css" rel="stylesheet">
       <div class="container-fluid">
         <div th:if="${playerName != null}" class="row mt-3 ms-3 mb-1">
-          <div class="text-muted col-1 text-truncate">Твое имя:</div>
+          <div class="text-muted col-1 text-truncate">Ваше имя:</div>
           <div class="col-3 text-truncate" th:text="${playerName}"/>
         </div>
         <div th:if="${completeCount != null && startCount != null}" class="row ms-3 my-1">
