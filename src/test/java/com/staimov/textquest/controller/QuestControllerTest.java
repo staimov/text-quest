@@ -1,6 +1,8 @@
 package com.staimov.textquest.controller;
 
+import com.staimov.textquest.model.QuestChoice;
 import com.staimov.textquest.model.QuestStep;
+import com.staimov.textquest.service.ObjectNotFoundException;
 import com.staimov.textquest.service.QuestService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -13,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
@@ -29,55 +32,23 @@ class QuestControllerTest {
     private QuestService service;
 
     @Test
-    void startQuestShouldRedirectToCurrentStepView() throws Exception {
-        mockMvc.perform(get("/startQuest").accept(MediaType.TEXT_HTML))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/currentStep"));
-    }
+    public void welcomeShouldOpenWelcomeViewWithStatusOk() throws Exception {
+        doReturn("foo").when(service).getQuestName();
+        doReturn("bar").when(service).getQuestDescription();
+        doReturn(22).when(service).getStartCount();
+        doReturn(11).when(service).getCompleteCount();
+        doReturn("baz").when(service).getPlayerName();
 
-    @Test
-    void nextStepWithCorrectParamsAndIfQuestIsStartedShouldRedirectToCurrentStepView() throws Exception {
-        doReturn(true).when(service).isQuestStarted();
-        doReturn(new QuestStep()).when(service).getCurrentQuestStep();
-
-        mockMvc.perform(get("/nextStep")
-                        .param("choiceId", "0")
-                        .param("stepId", "0")
-                        .accept(MediaType.TEXT_HTML))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/currentStep"));
-    }
-
-    @Test
-    void nextStepWithCorrectParamsAndIfQuestIsStartedShouldCallMakeChoiceMethod() throws Exception {
-        doReturn(true).when(service).isQuestStarted();
-        QuestStep currentStep = new QuestStep();
-        long currentStepId = currentStep.getId();
-        int choiceId = 3;
-        doReturn(currentStep).when(service).getCurrentQuestStep();
-
-        mockMvc.perform(get("/nextStep")
-                        .param("choiceId", String.valueOf(choiceId))
-                        .param("stepId", String.valueOf(currentStepId))
-                        .accept(MediaType.TEXT_HTML));
-
-        Mockito.verify(service, Mockito.times(1)).makeQuestChoice(choiceId);
-    }
-
-    @Test
-    void nextStepWithNotRelevantStepIdShouldNotCallMakeChoiceMethod() throws Exception {
-        doReturn(true).when(service).isQuestStarted();
-        QuestStep currentStep = new QuestStep();
-        long currentStepId = currentStep.getId();
-        int choiceId = 3;
-        doReturn(currentStep).when(service).getCurrentQuestStep();
-
-        mockMvc.perform(get("/nextStep")
-                .param("choiceId", String.valueOf(choiceId))
-                .param("stepId", String.valueOf(currentStepId + 1))
-                .accept(MediaType.TEXT_HTML));
-
-        Mockito.verify(service, Mockito.never()).makeQuestChoice(anyInt());
+        mockMvc.perform(get("/welcome").accept(MediaType.TEXT_HTML))
+                .andExpect(status().isOk())
+                .andExpect(view().name("welcome"))
+                .andExpect(model().attribute("questName", "foo"))
+                .andExpect(model().attribute("questDescription", "bar"))
+                .andExpect(model().attributeExists("sessionId"))
+                .andExpect(model().attributeExists("clientIp"))
+                .andExpect(model().attribute("startCount", 22))
+                .andExpect(model().attribute("completeCount", 11))
+                .andExpect(model().attribute("playerName", "baz"));
     }
 
     @Test
@@ -111,6 +82,55 @@ class QuestControllerTest {
     }
 
     @Test
+    void nextStepWithValidParamsShouldRedirectToCurrentStepViewWithValidParams() throws Exception {
+        QuestStep step = new QuestStep();
+        doReturn(step).when(service).getNextQuestStep(anyLong(), anyInt());
+
+        mockMvc.perform(get("/nextStep")
+                        .param("stepId", "7")
+                        .param("choiceId", "8")
+                        .accept(MediaType.TEXT_HTML))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(model().attribute("stepId", String.valueOf(step.getId())))
+                .andExpect(model().attribute("prevStepId", "7"))
+                .andExpect(model().attribute("prevChoiceId", "8"))
+                .andExpect(view().name("redirect:/currentStep"));
+    }
+
+    @Test
+    void nextStepIfNextStepNotFoundShouldLeadToError4xx() throws Exception {
+        doReturn(null).when(service).getNextQuestStep(anyLong(), anyInt());
+
+        mockMvc.perform(get("/nextStep")
+                        .param("stepId", "0")
+                        .param("choiceId", "0")
+                        .accept(MediaType.TEXT_HTML))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    void nextStepWithChoiceIdParamOutOfBoundsShouldThrowIndexOutOfBoundsException() {
+        doThrow(IndexOutOfBoundsException.class).when(service).getNextQuestStep(anyLong(), anyInt());
+
+        assertThatThrownBy(
+                () -> mockMvc.perform(get("/nextStep")
+                        .param("choiceId", "0")
+                        .param("stepId", "0")))
+            .hasCauseInstanceOf(IndexOutOfBoundsException.class);
+    }
+
+    @Test
+    void nextStepWithInvalidStepIdParamShouldThrowObjectNotFoundException() {
+        doThrow(ObjectNotFoundException.class).when(service).getNextQuestStep(anyLong(), anyInt());
+
+        assertThatThrownBy(
+                () -> mockMvc.perform(get("/nextStep")
+                        .param("choiceId", "0")
+                        .param("stepId", "0")))
+                .hasCauseInstanceOf(ObjectNotFoundException.class);
+    }
+
+    @Test
     void nextStepWithEmptyParamsShouldLeadToError4xx() throws Exception {
         mockMvc.perform(get("/nextStep").accept(MediaType.TEXT_HTML))
                 .andExpect(status().is4xxClientError());
@@ -133,70 +153,147 @@ class QuestControllerTest {
     }
 
     @Test
-    void nextStepIfQuestNotStartedThrowsIllegalStateException() {
-        assertThatThrownBy(
-                () -> mockMvc.perform(get("/nextStep")
-                        .param("choiceId", "0")
-                        .param("stepId", "0")))
-            .hasCauseInstanceOf(IllegalStateException.class);
-    }
-
-    @Test
-    void nextStepWithChoiceOutOfBoundsShouldThrowIndexOutOfBoundsException() {
-        doReturn(true).when(service).isQuestStarted();
-        doReturn(new QuestStep()).when(service).getCurrentQuestStep();
-        doThrow(IndexOutOfBoundsException.class).when(service).makeQuestChoice(anyInt());
-        long stepId = service.getCurrentQuestStep().getId();
-
-        assertThatThrownBy(
-                () -> mockMvc.perform(get("/nextStep")
-                        .param("choiceId", "0")
-                        .param("stepId", String.valueOf(stepId))))
-            .hasCauseInstanceOf(IndexOutOfBoundsException.class);
-    }
-
-    @Test
-    public void welcomeShouldOpenWelcomeViewWithStatusOk() throws Exception {
-        doReturn("foo").when(service).getQuestName();
-        doReturn("bar").when(service).getQuestDescription();
-        doReturn(22).when(service).getStartCount();
-        doReturn(11).when(service).getCompleteCount();
-        doReturn("baz").when(service).getPlayerName();
-
-        mockMvc.perform(get("/welcome").accept(MediaType.TEXT_HTML))
-                .andExpect(status().isOk())
-                .andExpect(view().name("welcome"))
-                .andExpect(model().attribute("questName", "foo"))
-                .andExpect(model().attribute("questDescription", "bar"))
-                .andExpect(model().attributeExists("sessionId"))
-                .andExpect(model().attributeExists("clientIp"))
-                .andExpect(model().attribute("startCount", 22))
-                .andExpect(model().attribute("completeCount", 11))
-                .andExpect(model().attribute("playerName", "baz"));
-
-
-
-    }
-
-    @Test
     public void currentStepShouldOpenCurrentStepViewWithStatusOk() throws Exception {
+        long prevStepId = 7;
+        int prevChoiceId = 8;
         QuestStep currentStep = new QuestStep();
 
         doReturn("foo").when(service).getQuestName();
-        doReturn(currentStep).when(service).getCurrentQuestStep();
+        doReturn(currentStep).when(service).getQuestStep(currentStep.getId());
         doReturn(22).when(service).getStartCount();
         doReturn(11).when(service).getCompleteCount();
         doReturn("baz").when(service).getPlayerName();
+        doReturn("qux").when(service).getChoiceDescription(prevStepId, prevChoiceId);
 
-        mockMvc.perform(get("/currentStep").accept(MediaType.TEXT_HTML))
+        mockMvc.perform(get("/currentStep")
+                        .param("stepId", String.valueOf(currentStep.getId()))
+                        .param("prevStepId", String.valueOf(prevStepId))
+                        .param("prevChoiceId", String.valueOf(prevChoiceId))
+                        .accept(MediaType.TEXT_HTML))
                 .andExpect(status().isOk())
                 .andExpect(view().name("currentStep"))
                 .andExpect(model().attribute("questName", "foo"))
+                .andExpect(model().attribute("prevChoiceDescription", "qux"))
                 .andExpect(model().attribute("currentStep", currentStep))
                 .andExpect(model().attributeExists("sessionId"))
                 .andExpect(model().attributeExists("clientIp"))
                 .andExpect(model().attribute("startCount", 22))
                 .andExpect(model().attribute("completeCount", 11))
                 .andExpect(model().attribute("playerName", "baz"));
+    }
+
+    @Test
+    void currentStepWithChoiceIdParamOutOfBoundsShouldThrowIndexOutOfBoundsException() {
+        doThrow(IndexOutOfBoundsException.class).when(service).getChoiceDescription(anyLong(), anyInt());
+        doReturn(new QuestStep()).when(service).getQuestStep(anyLong());
+
+        assertThatThrownBy(
+                () -> mockMvc.perform(get("/currentStep")
+                        .param("stepId", "0")
+                        .param("prevStepId", "0")
+                        .param("prevChoiceId", "0")))
+                .hasCauseInstanceOf(IndexOutOfBoundsException.class);
+    }
+
+    @Test
+    void currentStepWithInvalidStepIdParamShouldThrowObjectNotFoundException() {
+        doThrow(ObjectNotFoundException.class).when(service).getChoiceDescription(anyLong(), anyInt());
+        doReturn(new QuestStep()).when(service).getQuestStep(anyLong());
+
+        assertThatThrownBy(
+                () -> mockMvc.perform(get("/currentStep")
+                        .param("stepId", "0")
+                        .param("prevStepId", "0")
+                        .param("prevChoiceId", "0")))
+                .hasCauseInstanceOf(ObjectNotFoundException.class);
+    }
+
+    @Test
+    void currentStepIfStepNotFoundShouldLeadToError4xx() throws Exception {
+        doReturn(null).when(service).getQuestStep(anyLong());
+
+        mockMvc.perform(get("/currentStep")
+                        .param("stepId", "0")
+                        .param("prevStepId", "0")
+                        .param("prevChoiceId", "0")
+                        .accept(MediaType.TEXT_HTML))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    void currentStepIfStepIdIsNullShouldCallStartQuestMethod() throws Exception {
+        mockMvc.perform(get("/currentStep")
+                        .param("prevStepId", "0")
+                        .param("prevChoiceId", "0")
+                        .accept(MediaType.TEXT_HTML));
+
+        Mockito.verify(service, Mockito.times(1)).startQuest();
+    }
+
+    @Test
+    void currentStepIfStepIdIsNotNullShouldNotCallStartQuestMethod() throws Exception {
+        mockMvc.perform(get("/currentStep")
+                .param("stepId", "0")
+                .param("prevStepId", "0")
+                .param("prevChoiceId", "0")
+                .accept(MediaType.TEXT_HTML));
+
+        Mockito.verify(service, Mockito.never()).startQuest();
+    }
+
+    @Test
+    void currentStepIfStepIsFinalShouldCallCompleteQuestMethod() throws Exception {
+        doReturn(new QuestStep()).when(service).getQuestStep(anyLong());
+
+        mockMvc.perform(get("/currentStep")
+                .param("stepId", "0")
+                .param("prevStepId", "0")
+                .param("prevChoiceId", "0")
+                .accept(MediaType.TEXT_HTML));
+
+        Mockito.verify(service, Mockito.times(1)).completeQuest(any());
+    }
+
+    @Test
+    void currentStepIfStepIsNotFinalShouldNotCallCompleteQuestMethod() throws Exception {
+        QuestStep step = new QuestStep();
+        step.getChoices().add(new QuestChoice("foo", new QuestStep()));
+        doReturn(step).when(service).getQuestStep(anyLong());
+
+        mockMvc.perform(get("/currentStep")
+                .param("stepId", "0")
+                .param("prevStepId", "0")
+                .param("prevChoiceId", "0")
+                .accept(MediaType.TEXT_HTML));
+
+        Mockito.verify(service, Mockito.never()).completeQuest(any());
+    }
+
+    @Test
+    public void currentStepIfPrevStepParamsNullShouldOpenCurrentStepViewWithValidParams() throws Exception {
+        doReturn(new QuestStep()).when(service).getQuestStep(anyLong());
+        doReturn("qux").when(service).getChoiceDescription(anyLong(), anyInt());
+
+        mockMvc.perform(get("/currentStep")
+                        .param("stepId", "0")
+                        .param("prevChoiceId", "0")
+                        .accept(MediaType.TEXT_HTML))
+                .andExpect(status().isOk())
+                .andExpect(view().name("currentStep"))
+                .andExpect(model().attribute("prevChoiceDescription", nullValue()));
+    }
+
+    @Test
+    public void currentStepIfPrevSChoiceParamsNullShouldOpenCurrentStepViewWithValidParams() throws Exception {
+        doReturn(new QuestStep()).when(service).getQuestStep(anyLong());
+        doReturn("qux").when(service).getChoiceDescription(anyLong(), anyInt());
+
+        mockMvc.perform(get("/currentStep")
+                        .param("stepId", "0")
+                        .param("prevStepId", "0")
+                        .accept(MediaType.TEXT_HTML))
+                .andExpect(status().isOk())
+                .andExpect(view().name("currentStep"))
+                .andExpect(model().attribute("prevChoiceDescription", nullValue()));
     }
 }

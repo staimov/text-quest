@@ -3,6 +3,7 @@ package com.staimov.textquest.service;
 import com.staimov.textquest.model.QuestChoice;
 import com.staimov.textquest.model.QuestModel;
 import com.staimov.textquest.model.QuestStep;
+import com.staimov.textquest.model.StepType;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,123 +14,118 @@ class DefaultQuestServiceTest {
             new DefaultQuestService(new QuestModel("test"));
 
     @Test
-    void makeQuestChoiceForNotStartedQuestShouldThrowIllegalStateException() {
-        assertThrows(IllegalStateException.class,
-                () -> service.makeQuestChoice(0));
+    void constructorWithNullArgumentShouldThrowIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class,
+                () -> new DefaultQuestService(null));
     }
 
     @Test
-    void makeQuestChoiceForNotStartedQuestShouldExceptionWithRelevantMessage() {
-        String actualMessage = null;
-
-        try {
-            service.makeQuestChoice(0);
-        }
-        catch (Exception e) {
-            actualMessage = e.getMessage();
-        }
-
-        assertEquals("Current step is null", actualMessage);
+    void getNextQuestStepWithInvalidStepIdArgShouldThrowObjectNotFoundException() {
+        assertThrows(ObjectNotFoundException.class,
+                () -> service.getNextQuestStep(1, 1));
     }
 
     @Test
-    void makeQuestChoiceForChoiceOutOfBoundsShouldThrowIndexOutOfBoundsException() {
-        service.setQuestRoot(new QuestStep());
-        service.restartQuest();
+    void getNextQuestStepWithInvalidChoiceIdArgShouldThrowObjectNotFoundException() {
+        QuestStep step = new QuestStep();
+        service.addQuestStep(step);
 
         assertThrows(IndexOutOfBoundsException.class,
-                () -> service.makeQuestChoice(0));
+                () -> service.getNextQuestStep(step.getId(), 1));
     }
 
     @Test
-    void makeQuestChoiceForChoiceOutOfBoundsShouldThrowExceptionWithRelevantMessage() {
-        service.setQuestRoot(new QuestStep());
-        service.restartQuest();
-        int index = 2;
-        String expectedMessage  = String.format("Choice id %d is out of bounds", index);
-        String actualMessage = null;
-
-        try {
-            service.makeQuestChoice(index);
-        }
-        catch (Exception e) {
-            actualMessage = e.getMessage();
-        }
-
-        assertEquals(expectedMessage, actualMessage);
-    }
-
-    @Test
-    void makeQuestChoiceShouldSwitchToRelevantNextStep() {
-        QuestStep root = new QuestStep("root");
-        QuestStep next = new QuestStep("next");
-        QuestStep other = new QuestStep("other");
-        root.getChoices().add(new QuestChoice("select other", other)); //0
-        root.getChoices().add(new QuestChoice("select next", next)); //1
-        service.setQuestRoot(root);
-        service.restartQuest();
-
-        service.makeQuestChoice(1); //next
-
-        assertSame(next, service.getCurrentQuestStep());
-    }
-
-    @Test
-    void makeQuestChoiceShouldAssignCorrectPreviousChoiceDescription() {
-        QuestStep root = new QuestStep("root");
-        QuestStep next = new QuestStep("next");
-        QuestStep other = new QuestStep("other");
-        root.getChoices().add(new QuestChoice("select other", other)); //0
-        root.getChoices().add(new QuestChoice("select next", next)); //1
-        service.setQuestRoot(root);
-        service.restartQuest();
-
-        service.makeQuestChoice(1); //next
-
-        assertEquals(root.getChoices().get(1).getDescription(),
-                service.getCurrentQuestStep().getPreviousChoiceDescription());
-    }
-
-    @Test
-    void restartQuestShouldSetCurrentStepToRoot() {
+    void getNextQuestStepWithValidArgsShouldReturnValidStepObject() {
         QuestStep root = new QuestStep();
-        service.setQuestRoot(root);
+        QuestStep next = new QuestStep();
+        root.getChoices().add(new QuestChoice("go next", next)); // 0
+        service.addQuestStep(root);
+        service.addQuestStep(next);
 
-        service.restartQuest();
-
-        assertSame(root, service.getCurrentQuestStep());
+        assertSame(next, service.getNextQuestStep(root.getId(), 0));
     }
 
     @Test
-    void resetQuestShouldSetCurrentStepToNull() {
-        QuestStep root = new QuestStep();
-        service.setQuestRoot(root);
-        service.restartQuest();
-
-        service.resetQuest();
-
-        assertNull(service.getCurrentQuestStep());
+    void getChoiceDescriptionWithInvalidStepIdArgShouldThrowObjectNotFoundException() {
+        assertThrows(ObjectNotFoundException.class,
+                () -> service.getChoiceDescription(1, 1));
     }
 
     @Test
-    void restartQuestShouldMakeQuestStarted() {
-        QuestStep root = new QuestStep();
-        service.setQuestRoot(root);
+    void getChoiceDescriptionWithInvalidChoiceIdArgShouldThrowObjectNotFoundException() {
+        QuestStep step = new QuestStep();
+        service.addQuestStep(step);
 
-        service.restartQuest();
-
-        assertTrue(service.isQuestStarted());
+        assertThrows(IndexOutOfBoundsException.class,
+                () -> service.getChoiceDescription(step.getId(), 1));
     }
 
     @Test
-    void resetQuestShouldMakeQuestNotStarted() {
+    void getChoiceDescriptionWithValidArgsShouldReturnValidString() {
         QuestStep root = new QuestStep();
-        service.setQuestRoot(root);
-        service.restartQuest();
+        QuestStep next = new QuestStep();
+        root.getChoices().add(new QuestChoice("go next", next)); // 0
+        service.addQuestStep(root);
+        service.addQuestStep(next);
 
-        service.resetQuest();
+        assertEquals("go next", service.getChoiceDescription(root.getId(), 0));
+    }
 
-        assertFalse(service.isQuestStarted());
+    @Test
+    void getQuestStep() {
+
+    }
+
+    @Test
+    void addedQuestStepIdShouldBeContainedInTheService() {
+        QuestStep step = new QuestStep();
+
+        service.addQuestStep(step);
+
+        assertTrue(service.containsQuestStep(step.getId()));
+    }
+
+    @Test
+    void notAddedQuestStepIdShouldNotBeContainedInTheService() {
+        assertFalse(service.containsQuestStep(789));
+    }
+
+    @Test
+    void addedQuestStepShouldBeGettableFromTheService() {
+        QuestStep step = new QuestStep();
+
+        service.addQuestStep(step);
+
+        assertSame(step, service.getQuestStep(step.getId()));
+    }
+
+    @Test
+    void getQuestStepShouldReturnNullIfStepIdIsNotInTheService() {
+        assertNull(service.getQuestStep(789));
+    }
+
+    @Test
+    void setQuestRootShouldSetTheRoot() {
+        QuestStep step = new QuestStep();
+
+        service.setQuestRoot(step);
+
+        assertSame(step, service.getQuestRoot());
+    }
+
+    @Test
+    void clearModelShouldClearStepsAndRootAndName() {
+        QuestStep step = new QuestStep();
+        service.addQuestStep(step);
+        service.setQuestRoot(step);
+
+        service.clearModel();
+
+        assertAll(
+                () -> assertNull(service.getQuestRoot()),
+                () -> assertNull(service.getQuestStep(step.getId())),
+                () -> assertNull(service.getQuestName())
+        );
     }
 
     @Test
@@ -148,42 +144,19 @@ class DefaultQuestServiceTest {
     }
 
     @Test
-    void initModelShouldSetCurrentStepToNull() {
-        service.initModel();
-
-        assertNull(service.getCurrentQuestStep());
-    }
-
-    @Test
-    void restartQuestShouldIncrementStartCount() {
+    void startQuestShouldIncrementStartCount() {
         int prevStartCount = service.getStartCount();
 
-        service.restartQuest();
+        service.startQuest();
 
         assertEquals(prevStartCount + 1, service.getStartCount());
     }
 
     @Test
-    void restartOneStepQuestShouldIncrementCompleteCount() {
-        QuestStep root = new QuestStep();
-        service.setQuestRoot(root);
-        int prevCompleteCount = service.getCompleteCount();
-
-        service.restartQuest();
-
-        assertEquals(prevCompleteCount + 1, service.getCompleteCount());
-    }
-
-    @Test
     void completeQuestShouldIncrementCompleteCount() {
-        QuestStep root = new QuestStep("root");
-        QuestStep next = new QuestStep("next");
-        root.getChoices().add(new QuestChoice("select next", next));
-        service.setQuestRoot(root);
         int prevCompleteCount = service.getCompleteCount();
-        service.restartQuest();
 
-        service.makeQuestChoice(0);
+        service.completeQuest(StepType.NEUTRAL);
 
         assertEquals(prevCompleteCount + 1, service.getCompleteCount());
     }
@@ -192,7 +165,8 @@ class DefaultQuestServiceTest {
     void resetCountersShouldSetCountersToZero() {
         QuestStep root = new QuestStep();
         service.setQuestRoot(root);
-        service.restartQuest();
+        service.startQuest();
+        service.completeQuest(StepType.NEUTRAL);
 
         service.resetCounters();
 
@@ -206,7 +180,8 @@ class DefaultQuestServiceTest {
     void initModelShouldSetCountersToZero() {
         QuestStep root = new QuestStep();
         service.setQuestRoot(root);
-        service.restartQuest();
+        service.startQuest();
+        service.completeQuest(StepType.NEUTRAL);
 
         service.initModel();
 

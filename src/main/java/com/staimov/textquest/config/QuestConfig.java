@@ -17,6 +17,6 @@ public class QuestConfig {
         //QuestService service = new DefaultQuestService(new QuestModel());
         //QuestService service = new EmptyQuestService(new QuestModel());
         service.initModel();
-        return service ;
+        return service;
     }
 }

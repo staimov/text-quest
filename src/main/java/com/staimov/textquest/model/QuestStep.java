@@ -8,7 +8,6 @@ public class QuestStep {
     private static final AtomicInteger count = new AtomicInteger(0);
     private final long id;
     private String description;
-    private String previousChoiceDescription;
     private StepType type = StepType.NEUTRAL;
     private final List<QuestChoice> choices = new ArrayList<>();
 
@@ -49,14 +48,6 @@ public class QuestStep {
 
     public List<QuestChoice> getChoices() {
         return choices;
-    }
-
-    public String getPreviousChoiceDescription() {
-        return previousChoiceDescription;
-    }
-
-    public void setPreviousChoiceDescription(String previousChoiceDescription) {
-        this.previousChoiceDescription = previousChoiceDescription;
     }
 
     public boolean isFinal() {

@@ -15,7 +15,9 @@ public class DefaultQuestService extends AbstractQuestService {
     }
 
     public synchronized void initModel() {
-        logger.info("Quest init: {}", getClass().getSimpleName());
+        logger.debug("Quest init: {}", getClass().getSimpleName());
+
+        clearModel();
 
         getQuestModel().setName("НЛО");
         getQuestModel().setDescription(
@@ -44,8 +46,15 @@ public class DefaultQuestService extends AbstractQuestService {
         step2.getChoices().add(new QuestChoice("Рассказать правду о себе", step3));
         step2.getChoices().add(new QuestChoice("Солгать о себе", step6));
 
+        addQuestStep(step0);
+        addQuestStep(step1);
+        addQuestStep(step2);
+        addQuestStep(step3);
+        addQuestStep(step4);
+        addQuestStep(step5);
+        addQuestStep(step6);
+        setQuestRoot(step0);
+
         resetCounters();
-        getQuestModel().setRoot(step0);
-        getQuestModel().setCurrentStep(null);
     }
 }

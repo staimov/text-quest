@@ -13,10 +13,10 @@ public class EmptyQuestService extends AbstractQuestService {
 
     @Override
     public synchronized void initModel() {
-        logger.info("Quest init: {}", getClass().getSimpleName());
+        logger.debug("Quest init: {}", getClass().getSimpleName());
+
+        clearModel();
 
         resetCounters();
-        getQuestModel().setRoot(null);
-        getQuestModel().setCurrentStep(null);
     }
 }
