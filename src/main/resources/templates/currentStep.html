@@ -25,9 +25,8 @@
         onClickConfirm=${currentStep != null && !currentStep.isFinal()})}"/>
 
     <div class="container d-flex flex-column">
-        <div class="mb-4" th:if="${currentStep != null && currentStep.getPreviousChoiceDescription() != null
-           && !currentStep.getPreviousChoiceDescription().isEmpty()}"
-           th:text="'Ты выбрал: ' + ${currentStep.getPreviousChoiceDescription()}"/>
+        <div class="mb-4" th:if="${prevChoiceDescription != null && !prevChoiceDescription.isEmpty()}"
+           th:text="'Ты выбрал: ' + ${prevChoiceDescription}"/>
 
         <div class="mb-3" th:text="${currentStep != null ? currentStep.getDescription() : 'Ничего не происходит...'}"/>
 

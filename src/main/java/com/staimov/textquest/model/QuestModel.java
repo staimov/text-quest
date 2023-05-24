@@ -1,16 +1,36 @@
 package com.staimov.textquest.model;
 
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
 public class QuestModel {
     private QuestStep root;
-    private QuestStep currentStep;
     private String name;
     private String description;
+    private final ConcurrentMap<Long, QuestStep> steps = new ConcurrentHashMap();
 
     public QuestModel() {
     }
 
     public QuestModel(String name) {
         this.name = name;
+    }
+
+    public QuestStep getStep(long id) {
+        return steps.get(id);
+    }
+
+    public boolean containsStep(long id) {
+        return steps.containsKey(id);
+    }
+
+    public void clearSteps() {
+        root = null;
+        steps.clear();
+    }
+
+    public void addStep(QuestStep step) {
+        steps.put(step.getId(), step);
     }
 
     public String getName() {
@@ -29,47 +49,11 @@ public class QuestModel {
         this.description = description;
     }
 
-    public void restart() {
-        currentStep = root;
-    }
-
-    public void reset() {
-        currentStep = null;
-    }
-
     public QuestStep getRoot() {
         return root;
     }
 
     public void setRoot(QuestStep root) {
         this.root = root;
-    }
-
-    public QuestStep getCurrentStep() {
-        return currentStep;
-    }
-
-    public void setCurrentStep(QuestStep currentStep) {
-        this.currentStep = currentStep;
-    }
-
-    public boolean isFinal() {
-        return isStarted() && currentStep.isFinal();
-    }
-
-    public boolean isPositiveFinal() {
-        return isStarted() && currentStep.isPositiveFinal();
-    }
-
-    public boolean isNegativeFinal() {
-        return isStarted() && currentStep.isNegativeFinal();
-    }
-
-    public boolean isNeutralFinal() {
-        return isStarted() && currentStep.isNeutralFinal();
-    }
-
-    public boolean isStarted() {
-        return currentStep != null;
     }
 }

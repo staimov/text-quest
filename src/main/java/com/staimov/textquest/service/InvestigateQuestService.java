@@ -16,7 +16,9 @@ public class InvestigateQuestService extends AbstractQuestService {
 
     @Override
     public void initModel() {
-        logger.info("Quest init: {}", getClass().getSimpleName());
+        logger.debug("Quest init: {}", getClass().getSimpleName());
+
+        clearModel();
 
         getQuestModel().setName("Космическое расследование");
         getQuestModel().setDescription(
@@ -137,10 +139,23 @@ public class InvestigateQuestService extends AbstractQuestService {
                 "и помочь ей скрыть убийство, " +
                 "чтобы сохранить свою жизнь.", step5b));
 
+        addQuestStep(step1);
+        addQuestStep(step2a);
+        addQuestStep(step2b);
+        addQuestStep(step2c);
+        addQuestStep(step3a);
+        addQuestStep(step3b);
+        addQuestStep(step3c);
+        addQuestStep(step3d);
+        addQuestStep(step4a);
+        addQuestStep(step4b);
+        addQuestStep(step4d);
+        addQuestStep(step4e);
+        addQuestStep(step5a);
+        addQuestStep(step5b);
+        addQuestStep(step5c);
+        setQuestRoot(step1);
 
         resetCounters();
-        getQuestModel().setRoot(step1);
-        getQuestModel().setCurrentStep(null);
-
     }
 }

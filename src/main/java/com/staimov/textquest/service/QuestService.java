@@ -1,19 +1,12 @@
 package com.staimov.textquest.service;
 
 import com.staimov.textquest.model.QuestStep;
+import com.staimov.textquest.model.StepType;
 
 public interface QuestService {
     void initModel();
 
-    void restartQuest();
-
-    void resetQuest();
-
-    void makeQuestChoice(int choiceId);
-
-    QuestStep getCurrentQuestStep();
-
-    boolean isQuestStarted();
+    void startQuest();
 
     int getStartCount();
 
@@ -32,4 +25,18 @@ public interface QuestService {
      void setQuestRoot(QuestStep root);
 
      void resetCounters();
+
+    QuestStep getQuestStep(long id);
+
+    boolean containsQuestStep(long id);
+
+    void clearModel();
+
+    void addQuestStep(QuestStep step);
+
+    QuestStep getNextQuestStep(long currentStepId, int choiceId);
+
+    String getChoiceDescription(long stepId, int choiceId);
+
+    void completeQuest(StepType type);
 }

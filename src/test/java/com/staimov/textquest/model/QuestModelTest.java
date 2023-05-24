@@ -8,156 +8,53 @@ class QuestModelTest {
     private final QuestModel model = new QuestModel("test");
 
     @Test
-    void modelAfterRestartShouldHaveNotNullCurrentStep() {
-        QuestStep root = new QuestStep();
-        model.setRoot(root);
+    void addedStepIdShouldBeContainedInTheModel() {
+        QuestStep step = new QuestStep();
 
-        model.restart();
+        model.addStep(step);
 
-        assertNotNull(model.getCurrentStep());
+        assertTrue(model.containsStep(step.getId()));
     }
 
     @Test
-    void modelAfterResetShouldHaveNullCurrentStep() {
-        QuestStep root = new QuestStep();
-        model.setRoot(root);
-        model.restart();
-
-        model.reset();
-
-        assertNull(model.getCurrentStep());
+    void notAddedStepIdShouldNotBeContainedInTheModel() {
+        assertFalse(model.containsStep(789));
     }
 
     @Test
-    void justCreatedModelShouldHaveNullCurrentStep() {
-        QuestStep root = new QuestStep();
-        model.setRoot(root);
+    void addedStepShouldBeGettableFromTheModel() {
+        QuestStep step = new QuestStep();
 
-        assertNull(model.getCurrentStep());
+        model.addStep(step);
+
+        assertSame(step, model.getStep(step.getId()));
     }
 
     @Test
-    void justCreatedModelShouldBeNotStarted() {
-        QuestStep root = new QuestStep();
-        model.setRoot(root);
-
-        assertFalse(model.isStarted());
+    void getStepShouldReturnNullIfStepIdIsNotInTheModel() {
+        assertNull(model.getStep(789));
     }
 
     @Test
-    void restartedModelShouldBeStarted() {
-        QuestStep root = new QuestStep();
-        model.setRoot(root);
+    void setRootShouldSetRoot() {
+        QuestStep step = new QuestStep();
 
-        model.restart();
+        model.setRoot(step);
 
-        assertTrue(model.isStarted());
+        assertSame(step, model.getRoot());
     }
 
     @Test
-    void restartModelShouldSetCurrentStepToRoot() {
-        QuestStep root = new QuestStep();
-        model.setRoot(root);
+    void clearStepsShouldClearStepsAndRoot() {
+        QuestStep step = new QuestStep();
+        model.addStep(step);
+        model.setRoot(step);
 
-        model.restart();
-
-        assertSame(root, model.getCurrentStep());
-    }
-
-    @Test
-    void resetModelShouldSetCurrentStepToNull() {
-        QuestStep root = new QuestStep();
-        model.setRoot(root);
-        model.restart();
-
-        model.reset();
-
-        assertNull(model.getCurrentStep());
-    }
-
-    @Test
-    void resetModelShouldNotBeStarted() {
-        QuestStep root = new QuestStep();
-        model.setRoot(root);
-        model.restart();
-
-        model.reset();
-
-        assertFalse(model.isStarted());
-    }
-
-    @Test
-    void modelWithNullCurrentStepShouldNotBeFinal() {
-        assertAll(
-                () -> assertFalse(model.isFinal()),
-                () -> assertFalse(model.isPositiveFinal()),
-                () -> assertFalse(model.isNegativeFinal()),
-                () -> assertFalse(model.isNeutralFinal())
-        );
-    }
-
-    @Test
-    void modelWithFinalCurrentStepShouldBeFinal() {
-        QuestStep root = new QuestStep();
-        model.setRoot(root);
-
-        model.restart();
-
-        assertTrue(model.isFinal());
-    }
-
-    @Test
-    void modelWithFinalCurrentStepShouldBeNeutralFinalByDefault() {
-        QuestStep root = new QuestStep();
-        model.setRoot(root);
-
-        model.restart();
-
-        assertTrue(model.isNeutralFinal());
-    }
-
-    @Test
-    void modelWithPositiveFinalCurrentStepShouldBePositiveFinalOnly() {
-        QuestStep root = new QuestStep();
-        root.setType(StepType.GOOD);
-        model.setRoot(root);
-
-        model.restart();
+        model.clearSteps();
 
         assertAll(
-                () -> assertTrue(model.isPositiveFinal()),
-                () -> assertFalse(model.isNegativeFinal()),
-                () -> assertFalse(model.isNeutralFinal())
-        );
-    }
-
-    @Test
-    void modelWithNegativeFinalCurrentStepShouldBeNegativeFinalOnly() {
-        QuestStep root = new QuestStep();
-        root.setType(StepType.BAD);
-        model.setRoot(root);
-
-        model.restart();
-
-        assertAll(
-                () -> assertFalse(model.isPositiveFinal()),
-                () -> assertTrue(model.isNegativeFinal()),
-                () -> assertFalse(model.isNeutralFinal())
-        );
-    }
-
-    @Test
-    void modelWithNeutralFinalCurrentStepShouldBeNeutralFinalOnly() {
-        QuestStep root = new QuestStep();
-        root.setType(StepType.NEUTRAL);
-        model.setRoot(root);
-
-        model.restart();
-
-        assertAll(
-                () -> assertFalse(model.isPositiveFinal()),
-                () -> assertFalse(model.isNegativeFinal()),
-                () -> assertTrue(model.isNeutralFinal())
+                () -> assertNull(model.getRoot()),
+                () -> assertNull(model.getStep(step.getId()))
         );
     }
 }
