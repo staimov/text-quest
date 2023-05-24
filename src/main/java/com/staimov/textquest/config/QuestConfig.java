@@ -13,8 +13,8 @@ public class QuestConfig {
     @Bean
     @SessionScope
     public QuestService selectedQuestService() {
-        //QuestService service = new InvestigateQuestService(new QuestModel());
-        QuestService service = new DefaultQuestService(new QuestModel());
+        QuestService service = new InvestigateQuestService(new QuestModel());
+        //QuestService service = new DefaultQuestService(new QuestModel());
         //QuestService service = new EmptyQuestService(new QuestModel());
         service.initModel();
         return service;
