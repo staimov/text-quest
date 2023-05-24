@@ -220,7 +220,6 @@ class QuestControllerTest {
                 .andExpect(status().is4xxClientError());
     }
 
-
     @Test
     void currentStepIfStepIdIsNullShouldCallStartQuestMethod() throws Exception {
         mockMvc.perform(get("/currentStep")
