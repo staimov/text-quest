@@ -7,7 +7,7 @@ public class QuestModel {
     private QuestStep root;
     private String name;
     private String description;
-    private final ConcurrentMap<Long, QuestStep> steps = new ConcurrentHashMap();
+    private final ConcurrentMap<Long, QuestStep> steps = new ConcurrentHashMap<>();
 
     public QuestModel() {
     }
