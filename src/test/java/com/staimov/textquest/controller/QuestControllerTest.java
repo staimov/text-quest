@@ -270,7 +270,7 @@ class QuestControllerTest {
     }
 
     @Test
-    public void currentStepIfPrevStepParamsNullShouldOpenCurrentStepViewWithValidParams() throws Exception {
+    public void currentStepIfPrevStepParamIsNullShouldOpenCurrentStepViewWithValidParams() throws Exception {
         doReturn(new QuestStep()).when(service).getQuestStep(anyLong());
         doReturn("qux").when(service).getChoiceDescription(anyLong(), anyInt());
 
@@ -284,7 +284,7 @@ class QuestControllerTest {
     }
 
     @Test
-    public void currentStepIfPrevSChoiceParamsNullShouldOpenCurrentStepViewWithValidParams() throws Exception {
+    public void currentStepIfPrevChoiceParamIsNullShouldOpenCurrentStepViewWithValidParams() throws Exception {
         doReturn(new QuestStep()).when(service).getQuestStep(anyLong());
         doReturn("qux").when(service).getChoiceDescription(anyLong(), anyInt());
 
