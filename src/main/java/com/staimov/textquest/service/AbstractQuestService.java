@@ -17,6 +17,8 @@ public abstract class AbstractQuestService implements QuestService {
     private String playerName = "Homer";
 
     public AbstractQuestService(QuestModel questModel) {
+        logger.debug("Inside AbstractQuestService(QuestModel questModel) constructor");
+
         if (questModel == null) {
             throw new IllegalArgumentException("Model can not be null");
         }
