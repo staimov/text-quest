@@ -60,7 +60,7 @@ public class UnicornQuestService extends AbstractQuestService {
                 "Твои дальнейшие действия:");
 
         var step6 = new QuestStep("Ты правильно отвечаешь на загадку, проходишь испытание " +
-                "и получаешь силу Кристалла единорога. " +
+                "и получаешь силу Кристалла единорога, которая поможет тебе найти Последнего единорога. " +
                 "Теперь у тебя есть средство, чтобы спасти Последнего единорога. Твой выбор:");
 
         var step7 = new QuestStep("Ты возвращаешься к Гламурелле и просишь ее помощи в спасении Последнего единорога. " +
@@ -97,8 +97,11 @@ public class UnicornQuestService extends AbstractQuestService {
         var step15 = new QuestStep("Ты обнаружил план, с помощью которого можно найти логово Злого колдуна. " +
                 "Твой выбор:");
 
-        var step16 = new QuestStep("Глубоко в пещере ты находишь ценные сокровища, богатства ослепляют тебя, " +
-                "ты возвращаешься с ними домой " +
+        var step16 = new QuestStep("Глубоко в конце пещеры ты находишь ценные сокровища. " +
+                "Как ты поступишь:", StepType.NEUTRAL);
+
+        var step19 = new QuestStep("Богатства ослепляют тебя, ты забираешь их, " +
+                "возвращаешься с ними домой " +
                 "и забываешь о первоначальной цели путешествия. Последний единорог остается в плену навечно.", StepType.NEUTRAL);
 
         step1.getChoices().add(new QuestChoice("Разыскать следы Последнего единорога в Волшебном лесу.",
@@ -164,7 +167,7 @@ public class UnicornQuestService extends AbstractQuestService {
         step6.getChoices().add(new QuestChoice("Вернуться назад и обратиться за помощью к Гламурелле.",
                 step9));
         step6.getChoices().add(new QuestChoice("Направиться к логову Злого колдуна " +
-                "и, воспользовавшись силой Кристалла единорога, попытаться освободить Последнего единорога.",
+                "и, воспользовавшись силой Кристалла единорога, найти и попытаться освободить Последнего единорога.",
                 step13));
 
         step7.getChoices().add(new QuestChoice("Пойти вместе с Гламуреллой на поиски Злого колдуна.",
@@ -175,6 +178,11 @@ public class UnicornQuestService extends AbstractQuestService {
         step7.getChoices().add(new QuestChoice("Искать подсказки и информацию о Злом колдуне самостоятельно " +
                 "в Древнем храме.",
                 step3));
+
+        step16.getChoices().add(new QuestChoice("Забрать сокровища, сколько сможешь унести.",
+                step19));
+        step16.getChoices().add(new QuestChoice("Выбраться на поверхность и обратиться за советом к Гламурелле.",
+                step7));
 
         addQuestStep(step1);
         addQuestStep(step2);
@@ -194,6 +202,7 @@ public class UnicornQuestService extends AbstractQuestService {
         addQuestStep(step16);
         addQuestStep(step17);
         addQuestStep(step18);
+        addQuestStep(step19);
         setQuestRoot(step1);
 
     }
