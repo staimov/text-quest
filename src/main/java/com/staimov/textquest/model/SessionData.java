@@ -8,7 +8,7 @@ import org.springframework.web.context.annotation.SessionScope;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
-@SessionScope
+@SessionScope // !!!
 public class SessionData {
     private static final Logger logger = LoggerFactory.getLogger(SessionData.class);
 
