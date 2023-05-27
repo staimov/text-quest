@@ -1,9 +1,6 @@
 package com.staimov.textquest.service;
 
-import com.staimov.textquest.model.QuestChoice;
-import com.staimov.textquest.model.QuestModel;
-import com.staimov.textquest.model.QuestStep;
-import com.staimov.textquest.model.StepType;
+import com.staimov.textquest.model.*;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -11,12 +8,18 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DefaultQuestServiceTest {
     private final QuestService service =
-            new DefaultQuestService(new QuestModel("test"));
+            new DefaultQuestService(new QuestModel("test"), new SessionData());
 
     @Test
-    void constructorWithNullArgumentShouldThrowIllegalArgumentException() {
+    void constructorWithModelNullArgumentShouldThrowIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class,
-                () -> new DefaultQuestService(null));
+                () -> new DefaultQuestService(null, new SessionData()));
+    }
+
+    @Test
+    void constructorWithSessionDataNullArgumentShouldThrowIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class,
+                () -> new DefaultQuestService(new QuestModel(), null));
     }
 
     @Test
