@@ -1,1 +1,1 @@
-web: java -cp target/classes:target/dependency/* com.staimov.textquest.TextQuestApplication
+web: java -cp -Dserver.port=$PORT target/classes:target/dependency/* com.staimov.textquest.TextQuestApplication
