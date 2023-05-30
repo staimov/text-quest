@@ -1,0 +1,14 @@
+heroku --version
+
+heroku login
+
+# do it once
+heroku create
+
+mvn clean install
+
+git push heroku main
+
+heroku open
+
+heroku logs --tail
