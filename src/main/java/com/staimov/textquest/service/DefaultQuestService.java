@@ -11,6 +11,7 @@ public class DefaultQuestService extends AbstractQuestService {
         super(model, sessionData);
     }
 
+    @Override
     public void initModel() {
         logger.debug("Quest init: {}", getClass().getSimpleName());
 
@@ -52,8 +53,6 @@ public class DefaultQuestService extends AbstractQuestService {
             addQuestStep(step5);
             addQuestStep(step6);
             setQuestRoot(step0);
-
-            resetCounters();
         }
     }
 }

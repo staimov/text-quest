@@ -85,10 +85,10 @@ public class InvestigateQuestService extends AbstractQuestService {
                     "Исполнитель убийства разоблачен, однако ты не получаешь информацию о заказчике убийства.",
                     StepType.NEUTRAL);
 
-            step1.getChoices().add(new QuestChoice("Пойти в лабораторию, где было совершено убийство, " +
-                    "чтобы исследовать следы на месте преступления.", step2a));
             step1.getChoices().add(new QuestChoice("Пойти в комнату отдыха, " +
                     "чтобы поговорить с другими членами экипажа.", step2b));
+            step1.getChoices().add(new QuestChoice("Пойти в лабораторию, где было совершено убийство, " +
+                    "чтобы исследовать следы на месте преступления.", step2a));
             step1.getChoices().add(new QuestChoice("Пойти в каюту убитого, " +
                     "чтобы поискать дополнительные улики.", step2c));
 
@@ -153,8 +153,6 @@ public class InvestigateQuestService extends AbstractQuestService {
             addQuestStep(step5b);
             addQuestStep(step5c);
             setQuestRoot(step1);
-
-            resetCounters();
         }
     }
 }

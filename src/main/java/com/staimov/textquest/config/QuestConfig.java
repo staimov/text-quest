@@ -13,8 +13,8 @@ import org.springframework.context.annotation.Configuration;
 public class QuestConfig {
     @Bean(initMethod = "initModel")
     public QuestService selectedQuestService(QuestModel model, SessionData sessionData) {
-        return new UnicornQuestService(model, sessionData);
-        //return new InvestigateQuestService(model, sessionData);
+        //return new UnicornQuestService(model, sessionData);
+        return new InvestigateQuestService(model, sessionData);
         //return new DefaultQuestService(model, sessionData);
     }
 }

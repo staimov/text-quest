@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class UnicornQuestService extends AbstractQuestService {
-    private static final Logger logger = LoggerFactory.getLogger(InvestigateQuestService.class);
+    private static final Logger logger = LoggerFactory.getLogger(UnicornQuestService.class);
 
     public UnicornQuestService(QuestModel model, SessionData sessionData) {
         super(model, sessionData);

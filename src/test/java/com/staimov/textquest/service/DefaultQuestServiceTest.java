@@ -1,6 +1,7 @@
 package com.staimov.textquest.service;
 
 import com.staimov.textquest.model.*;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -180,14 +181,7 @@ class DefaultQuestServiceTest {
     }
 
     @Test
-    void initModelShouldSetCountersToZero() {
-        QuestStep root = new QuestStep();
-        service.setQuestRoot(root);
-        service.startQuest();
-        service.completeQuest(StepType.NEUTRAL);
-
-        service.initModel();
-
+    void justCreatedModelShouldHaveCountersToZero() {
         assertAll(
                 () -> assertEquals(0, service.getStartCount()),
                 () -> assertEquals(0, service.getCompleteCount())
