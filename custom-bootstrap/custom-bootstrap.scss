@@ -4,18 +4,46 @@
 // Include any default variable overrides here (though functions won't be available)
 $white: #ffffff;
 
+//$theme-colors: (
+//  "light": #fdefc1,
+//  "dark": #cddbe0,
+//  "primary": #316899,
+//  "secondary": #278ab0,
+//  "info": #50b3d0,
+//  "accent1": #d3448d,
+//  "accent2": #398679,
+//  "accent3": #e79dbc,
+//  "success": #19b466,
+//  "warning": #e9ce17,
+//  "danger": #fb0d0a,
+//);
+
+//$theme-colors: (
+//        "light":      #d5d8d6,
+//        "dark":       #151415,
+//        "primary":    #3a3c3c,
+//        "secondary":  #4f6564,
+//        "info":       #34aa93,
+//        "accent1":    #474848,
+//        "accent2":    #696d75,
+//        "accent3":    #a2a3a2,
+//        "success":    #1aa149,
+//        "warning":    #ebc61b,
+//        "danger":     #f10d34,
+//);
+
 $theme-colors: (
-  "light": #fdefc1,
-  "dark": #cddbe0,
-  "primary": #316899,
-  "secondary": #278ab0,
-  "info": #50b3d0,
-  "accent1": #d3448d,
-  "accent2": #398679,
-  "accent3": #e79dbc,
-  "success": #19b466,
-  "warning": #e9ce17,
-  "danger": #fb0d0a,
+        "light":      #cbe0e6,
+        "dark":       #04b9eb,
+        "primary":    #004a70,
+        "secondary":  #0076bd,
+        "info":       #25aee5,
+        "accent1":    #5b9152,
+        "accent2":    #59873b,
+        "accent3":    #9dad61,
+        "success":    #00ae5f,
+        "warning":    #e8cd00,
+        "danger":     #fa0004,
 );
 
 @import "../node_modules/bootstrap/scss/bootstrap";
