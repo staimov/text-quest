@@ -1,13 +1,31 @@
 # text-quest
-#### Text quest game
+### Text quest game
 
 JavaRush Module 3 final mini-project:
 
 https://javarush.com/quests/lectures/jru.module3.lecture04
 
-## To build this project:
+## To build the project
 
-Run `$ mvn clean install`
+In CLI use: 
+
+```
+mvn clean install
+```
+
+## To run the project
+
+In CLI use:
+
+```
+java -jar target/text-quest-1.0.0.jar
+```
+
+or
+
+```
+mvn spring-boot:run
+```
 
 ## Screenshot
 
