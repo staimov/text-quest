@@ -36,13 +36,13 @@
         <div th:if="${currentStep != null && currentStep.isFinal()}">
             <div th:if="${currentStep.isPositiveFinal()}"
                  class="badge bg-success-subtle border border-success-subtle text-success-emphasis rounded-pill fs-6">
-                Положительный исход!</div>
+                Положительная концовка!</div>
             <div th:if="${currentStep.isNegativeFinal()}"
                  class="badge bg-danger-subtle border border-danger-subtle text-danger-emphasis rounded-pill fs-6">
-                Отрицательный исход!</div>
+                Отрицательная концовка!</div>
             <div th:if="${currentStep.isNeutralFinal()}"
                  class="badge bg-info-subtle border border-info-subtle text-info-emphasis rounded-pill fs-6">
-                Нейтральный исход</div>
+                Нейтральная концовка</div>
         </div>
 
         <div th:if="${currentStep == null || currentStep.isFinal()}" class="ms-3 mt-4">
