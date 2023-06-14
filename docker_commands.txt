@@ -1,0 +1,29 @@
+docker --version
+
+###################
+#  by Dockerfile  #
+###################
+
+mvn clean install
+
+docker build --tag=text-quest:latest .
+
+docker image ls -a
+
+docker run -p8888:8080 text-quest:latest
+
+docker container ls -a
+
+docker stop CONTAINER_NAME
+
+docker rm CONTAINER_NAME
+
+docker image rm text-quest:latest
+
+###################
+#  or by Maven    #
+###################
+
+mvn spring-boot:build-image
+
+docker run -it -p8888:8080 text-quest:1.0.0
