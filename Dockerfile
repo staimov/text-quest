@@ -2,7 +2,7 @@
 FROM maven:3.9.1-eclipse-temurin-17-alpine AS builder
 COPY src /usr/app/src
 COPY pom.xml /usr/app
-RUN mvn -f /usr/src/app/pom.xml clean package -P-bootstrap-compile
+RUN mvn -f /usr/app/pom.xml clean package -P-bootstrap-compile
 
 # Second stage: runtime environment
 FROM openjdk:17-jdk-alpine
