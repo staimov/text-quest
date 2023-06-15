@@ -101,3 +101,5 @@ buildNumber.properties
 .project
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
+/package.json
+/package-lock.json
