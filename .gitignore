@@ -1,6 +1,6 @@
-HELP.md
-docker_commands.txt
-heroku_commands.txt
+/HELP.md
+/docker_commands.txt
+/heroku_commands.txt
 
 logs/
 
@@ -101,6 +101,7 @@ buildNumber.properties
 .project
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
+
 /package.json
 /package-lock.json
 /render.com.txt
