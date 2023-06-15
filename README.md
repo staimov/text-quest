@@ -37,14 +37,14 @@ heroku open
 
 ## To deploy and run the project in Docker
 
-Build the project and then use the commands:
+Use Dockerfile to build an image and run it:
 
 ```
 docker build --tag=text-quest:latest .
 ```
 
 ```
-docker run -p8888:8080 text-quest:latest
+docker run -it -p8888:8080 text-quest:latest
 ```
 
 Оr use Maven to build an image and run it:
