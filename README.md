@@ -6,17 +6,11 @@ JavaRush Module 3 final mini-project:
 https://javarush.com/quests/lectures/jru.module3.lecture04
 
 ## To build the project
-
-In CLI use: 
-
 ```
 mvn clean install
 ```
 
 ## To run the project
-
-In CLI use:
-
 ```
 java -jar target/text-quest-1.0.0.jar
 ```
@@ -25,6 +19,42 @@ or
 
 ```
 mvn spring-boot:run
+```
+
+## To deploy and run the project on Heroku
+
+```
+heroku create
+```
+
+```
+git push heroku main
+```
+
+```
+heroku open
+```
+
+## To deploy and run the project in Docker
+
+Build the project and then use the commands:
+
+```
+docker build --tag=text-quest:latest .
+```
+
+```
+docker run -p8888:8080 text-quest:latest
+```
+
+Оr use Maven to build an image and run it:
+
+```
+mvn spring-boot:build-image
+```
+
+```
+docker run -it -p8888:8080 text-quest:1.0.0
 ```
 
 ## Screenshot
