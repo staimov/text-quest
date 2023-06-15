@@ -38,100 +38,114 @@
 		</dependency>
 	</dependencies>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
+	<profiles>
+		<profile>
+			<id>common</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<version>3.0.1</version>
-				<executions>
-					<execution>
-						<id>copy-dependencies</id>
-						<phase>package</phase>
-						<goals><goal>copy-dependencies</goal></goals>
-					</execution>
-				</executions>
-			</plugin>
+			<build>
 
+				<plugins>
+					<plugin>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-maven-plugin</artifactId>
+					</plugin>
 
-			<!--
-			Для того, чтобы изменить палитру цветов в Bootstrap:
-			 1. установим менеджер пакетов npm;
-			 2. с помощью npm скачаем исходники bootstrap;
-			 3. скомпилируем исходники Bootstrap в css-файл
-			    c учетом новой цветовой палитры, заданной в файле custom_bootstrap.scss
-			-->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-dependency-plugin</artifactId>
+						<version>3.0.1</version>
+						<executions>
+							<execution>
+								<id>copy-dependencies</id>
+								<phase>package</phase>
+								<goals><goal>copy-dependencies</goal></goals>
+							</execution>
+						</executions>
+					</plugin>
 
-			<plugin>
-				<groupId>com.github.eirslett</groupId>
-				<artifactId>frontend-maven-plugin</artifactId>
-				<!-- Use the latest released version:
-                https://repo1.maven.org/maven2/com/github/eirslett/frontend-maven-plugin/ -->
-				<version>1.12.1</version>
+				</plugins>
+			</build>
+		</profile>
 
-				<executions>
-					<execution>
-						<!-- optional: you don't really need execution ids, but it looks nice in your build log. -->
-						<id>install node and npm</id>
-						<goals>
-							<goal>install-node-and-npm</goal>
-						</goals>
-						<!-- optional: default phase is "generate-resources" -->
-						<phase>generate-resources</phase>
-					</execution>
+		<profile>
+			<id>bootstrap-compile</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
 
-					<execution>
-						<id>npm install</id>
-						<goals>
-							<goal>npm</goal>
-						</goals>
+			<build>
+				<plugins>
 
-						<!-- optional: default phase is "generate-resources" -->
-						<phase>generate-resources</phase>
+					<!--
+                    Для того, чтобы изменить палитру цветов в Bootstrap:
+                     1. установим менеджер пакетов npm;
+                     2. с помощью npm скачаем исходники bootstrap;
+                     3. скомпилируем исходники Bootstrap в css-файл
+                        c учетом новой цветовой палитры, заданной в файле custom_bootstrap.scss.
+                     Примечание: если custom_bootstrap.scss уже скомпилирован,
+                     то эти пункты не обязательны и тогда можно построить проект с помощью команды
+                     mvn clean install -P-bootstrap-compile
+                    -->
 
+					<plugin>
+						<groupId>com.github.eirslett</groupId>
+						<artifactId>frontend-maven-plugin</artifactId>
+						<!-- Use the latest released version:
+                        https://repo1.maven.org/maven2/com/github/eirslett/frontend-maven-plugin/ -->
+						<version>1.12.1</version>
 						<configuration>
-							<!-- optional: The default argument is actually
-                            "install", so unless you need to run some other npm command,
-                            you can remove this whole <configuration> section.
-                            -->
-							<arguments>install bootstrap</arguments>
+							<nodeVersion>v18.16.0</nodeVersion>
+							<nodeDownloadRoot>https://nodejs.org/dist/</nodeDownloadRoot>
 						</configuration>
-					</execution>
-				</executions>
-				<configuration>
-					<nodeVersion>v4.6.0</nodeVersion>
-					<!-- downloadRoot is optional: where to download node and npm from.
-					Default downloadRoot to https://nodejs.org/dist/ -->
-				</configuration>
-			</plugin>
+						<executions>
+							<execution>
+								<!-- optional: you don't really need execution ids, but it looks nice in your build log. -->
+								<id>install node and npm</id>
+								<goals>
+									<goal>install-node-and-npm</goal>
+								</goals>
+								<phase>generate-resources</phase>
+							</execution>
 
-			<plugin>
-				<groupId>io.github.cleydyr</groupId>
-				<artifactId>dart-sass-maven-plugin</artifactId>
-				<version>1.1.0</version>
-				<executions>
-					<execution>
-						<id>generate-css-using-sass</id>
-						<phase>generate-resources</phase>
-						<goals>
-							<goal>compile-sass</goal>
-						</goals>
-						<configuration>
-							<inputFolder>./custom-bootstrap</inputFolder>
-							<outputFolder>./src/main/resources/static/css</outputFolder>
-							<noSourceMap>true</noSourceMap>
-							<style>COMPRESSED</style>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+							<execution>
+								<id>npm install</id>
+								<goals>
+									<goal>npm</goal>
+								</goals>
+								<phase>generate-resources</phase>
+								<configuration>
+									<arguments>install bootstrap</arguments>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
 
-		</plugins>
-	</build>
+					<plugin>
+						<groupId>io.github.cleydyr</groupId>
+						<artifactId>dart-sass-maven-plugin</artifactId>
+						<version>1.1.0</version>
+						<executions>
+							<execution>
+								<id>generate-css-using-sass</id>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>compile-sass</goal>
+								</goals>
+								<configuration>
+									<inputFolder>./custom-bootstrap</inputFolder>
+									<outputFolder>./src/main/resources/static/css</outputFolder>
+									<noSourceMap>true</noSourceMap>
+									<style>COMPRESSED</style>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
 
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>
