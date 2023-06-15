@@ -5,6 +5,10 @@ JavaRush Module 3 final mini-project:
 
 https://javarush.com/quests/lectures/jru.module3.lecture04
 
+## Screenshot
+
+![screenshot](./src/main/resources/static/images/screenshot1.png?raw=true)
+
 ## To build the project
 ```
 mvn clean install
@@ -56,10 +60,6 @@ mvn spring-boot:build-image
 ```
 docker run -it -p8888:8080 text-quest:1.0.0
 ```
-
-## Screenshot
-
-![screenshot](./src/main/resources/static/images/screenshot1.png?raw=true)
 
 ## Attributions
 
