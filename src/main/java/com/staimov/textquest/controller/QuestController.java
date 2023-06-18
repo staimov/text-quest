@@ -31,6 +31,7 @@ public class QuestController {
                           Model model,
                           HttpSession session,
                           HttpServletRequest request) {
+
         logger.debug("welcome path requested");
 
         if (newName != null && !newName.isBlank()
@@ -53,6 +54,7 @@ public class QuestController {
     public String nextStep(@RequestParam("stepId") long stepId,
                            @RequestParam("choiceId") int choiceId,
                            RedirectAttributes redirectAttributes) {
+
         logger.debug("nextStep path requested (stepId = {}, choiceId = {})",
                 stepId, choiceId);
 
@@ -62,8 +64,7 @@ public class QuestController {
 
         if (nextStep == null) {
             throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "Quest step not found"
-            );
+                    HttpStatus.NOT_FOUND, "Quest step not found");
         }
 
         long nextStepId = nextStep.getId();
@@ -102,8 +103,7 @@ public class QuestController {
 
         if (currentStep == null) {
             throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "Quest step not found"
-            );
+                    HttpStatus.NOT_FOUND, "Quest step not found");
         }
 
         if (prevStepId != null && prevChoiceId != null) {
