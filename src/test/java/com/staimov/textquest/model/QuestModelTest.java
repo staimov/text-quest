@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class QuestModelTest {
-    private final QuestModel model = new QuestModel("test");
+    private final QuestModel model = new QuestModelImpl("test");
 
     @Test
     void addedStepIdShouldBeContainedInTheModel() {
@@ -42,19 +42,5 @@ class QuestModelTest {
         model.setRoot(step);
 
         assertSame(step, model.getRoot());
-    }
-
-    @Test
-    void clearStepsShouldClearStepsAndRoot() {
-        QuestStep step = new QuestStep();
-        model.addStep(step);
-        model.setRoot(step);
-
-        model.clearSteps();
-
-        assertAll(
-                () -> assertNull(model.getRoot()),
-                () -> assertNull(model.getStep(step.getId()))
-        );
     }
 }
