@@ -11,13 +11,11 @@ import org.springframework.context.annotation.Configuration;
 public class QuestConfig {
     private static final Logger logger = LoggerFactory.getLogger(QuestConfig.class);
 
-    @Value( "${text-quest.type}" )
+    @Value("${text-quest.type}")
     private String textQuestType;
 
     @Bean
     public QuestModel selectedQuestModel() {
-        QuestModelFactory factory;
-
         if (textQuestType.isBlank()) {
             logger.debug("Quest type is blank");
         }
@@ -25,18 +23,11 @@ public class QuestConfig {
             logger.debug("Quest type is '{}'", textQuestType);
         }
 
-        switch (textQuestType.trim().toLowerCase()) {
-            case "investigate":
-                factory = new InvestigateQuestModelFactory();
-                break;
-
-            case "unicorn":
-                factory = new UnicornQuestModelFactory();
-                break;
-
-            default:
-                factory = new DefaultQuestModelFactory();
-        }
+        QuestModelFactory factory = switch (textQuestType.trim().toLowerCase()) {
+            case "investigate" -> new InvestigateQuestModelFactory();
+            case "unicorn" -> new UnicornQuestModelFactory();
+            default -> new DefaultQuestModelFactory();
+        };
 
         return factory.createModel();
     }
