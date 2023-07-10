@@ -6,8 +6,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,10 +17,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class QuestController {
     private static final Logger logger = LoggerFactory.getLogger(QuestController.class);
 
-    private QuestService service;
+    private final QuestService service;
 
-    @Autowired
-    public QuestController(@Qualifier("selectedQuestService") QuestService service) {
+    public QuestController(QuestService service) {
         this.service = service;
     }
 
@@ -31,6 +28,7 @@ public class QuestController {
                           Model model,
                           HttpSession session,
                           HttpServletRequest request) {
+
         logger.debug("welcome path requested");
 
         if (newName != null && !newName.isBlank()
@@ -53,6 +51,7 @@ public class QuestController {
     public String nextStep(@RequestParam("stepId") long stepId,
                            @RequestParam("choiceId") int choiceId,
                            RedirectAttributes redirectAttributes) {
+
         logger.debug("nextStep path requested (stepId = {}, choiceId = {})",
                 stepId, choiceId);
 
@@ -62,8 +61,7 @@ public class QuestController {
 
         if (nextStep == null) {
             throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "Quest step not found"
-            );
+                    HttpStatus.NOT_FOUND, "Quest step not found");
         }
 
         long nextStepId = nextStep.getId();
@@ -102,8 +100,7 @@ public class QuestController {
 
         if (currentStep == null) {
             throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "Quest step not found"
-            );
+                    HttpStatus.NOT_FOUND, "Quest step not found");
         }
 
         if (prevStepId != null && prevChoiceId != null) {

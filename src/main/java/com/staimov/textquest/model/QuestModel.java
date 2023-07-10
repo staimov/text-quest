@@ -1,69 +1,21 @@
 package com.staimov.textquest.model;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+public interface QuestModel {
+    QuestStep getStep(long id);
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+    boolean containsStep(long id);
 
-@Component
-public class QuestModel {
-    private static final Logger logger = LoggerFactory.getLogger(QuestModel.class);
+    void addStep(QuestStep step);
 
-    private QuestStep root;
-    private String name;
-    private String description;
-    private final ConcurrentMap<Long, QuestStep> steps = new ConcurrentHashMap<>();
+    String getName();
 
-    public QuestModel() {
-        logger.debug("Inside QuestModel() constructor");
-    }
+    void setName(String name);
 
-    public QuestModel(String name) {
-        logger.debug("Inside QuestModel(String name) constructor");
+    String getDescription();
 
-        this.name = name;
-    }
+    void setDescription(String description);
 
-    public QuestStep getStep(long id) {
-        return steps.get(id);
-    }
+    QuestStep getRoot();
 
-    public boolean containsStep(long id) {
-        return steps.containsKey(id);
-    }
-
-    public void clearSteps() {
-        root = null;
-        steps.clear();
-    }
-
-    public void addStep(QuestStep step) {
-        steps.put(step.getId(), step);
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public QuestStep getRoot() {
-        return root;
-    }
-
-    public void setRoot(QuestStep root) {
-        this.root = root;
-    }
+    void setRoot(QuestStep root);
 }

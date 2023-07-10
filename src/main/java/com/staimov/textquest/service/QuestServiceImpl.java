@@ -1,20 +1,20 @@
 package com.staimov.textquest.service;
 
-import com.staimov.textquest.model.QuestModel;
-import com.staimov.textquest.model.QuestStep;
-import com.staimov.textquest.model.SessionData;
-import com.staimov.textquest.model.StepType;
+import com.staimov.textquest.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
-public abstract class AbstractQuestService implements QuestService {
-    private static final Logger logger = LoggerFactory.getLogger(AbstractQuestService.class);
+@Service
+public class QuestServiceImpl implements QuestService {
+    private static final Logger logger = LoggerFactory.getLogger(QuestServiceImpl.class);
 
     final private QuestModel questModel;
     final private SessionData sessionData;
 
-    public AbstractQuestService(QuestModel questModel, SessionData sessionData) {
-        logger.debug("Inside AbstractQuestService(QuestModel questModel) constructor");
+    public QuestServiceImpl(@Qualifier("selectedQuestModel") QuestModel questModel, SessionData sessionData) {
+        logger.debug("Inside QuestServiceImpl(QuestModel questModel, SessionData sessionData) constructor");
 
         if (questModel == null) {
             throw new IllegalArgumentException("Model can not be null");
@@ -27,9 +27,6 @@ public abstract class AbstractQuestService implements QuestService {
         this.questModel = questModel;
         this.sessionData = sessionData;
     }
-
-    @Override
-    public abstract void initModel();
 
     @Override
     public int getStartCount() {
@@ -159,21 +156,6 @@ public abstract class AbstractQuestService implements QuestService {
     }
 
     @Override
-    public void setQuestRoot(QuestStep root) {
-        synchronized (questModel) {
-            questModel.setRoot(root);
-        }
-    }
-
-    @Override
-    public void resetCounters() {
-        synchronized (sessionData) {
-            sessionData.resetStartCount();
-            sessionData.resetCompleteCount();
-        }
-    }
-
-    @Override
     public QuestStep getQuestStep(long id) {
         synchronized (questModel) {
             return getQuestModel().getStep(id);
@@ -184,23 +166,6 @@ public abstract class AbstractQuestService implements QuestService {
     public boolean containsQuestStep(long id) {
         synchronized (questModel) {
             return getQuestModel().containsStep(id);
-        }
-    }
-
-    @Override
-    public void clearModel() {
-        synchronized (questModel) {
-            getQuestModel().setName(null);
-            getQuestModel().setDescription(null);
-            getQuestModel().clearSteps();
-            setQuestRoot(null);
-        }
-    }
-
-    @Override
-    public void addQuestStep(QuestStep step) {
-        synchronized (questModel) {
-            getQuestModel().addStep(step);
         }
     }
 }
