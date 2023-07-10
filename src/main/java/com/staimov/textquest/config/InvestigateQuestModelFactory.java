@@ -17,7 +17,7 @@ public class InvestigateQuestModelFactory implements QuestModelFactory{
         model.setDescription(
                 "В этой истории ты должен расследовать преступление, " +
                         "совершенное на космической станции. " +
-                        "В основе истории лежит сценарий, написанный ChatGPT.");
+                        "В основе истории лежит история, написанная ChatGPT.");
 
         var step1 = new QuestStep("Ты – агент службы безопасности, " +
                 "находишься на космической станции, " +
