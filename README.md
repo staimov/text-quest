@@ -5,6 +5,10 @@ JavaRush Module 3 final mini-project:
 
 https://javarush.com/quests/lectures/jru.module3.lecture04
 
+## Feel free to test the project deployed on render.com
+
+https://text-quest-l7tx.onrender.com
+
 ## Screenshot
 
 ![screenshot](./src/main/resources/static/images/screenshot1.png?raw=true)
@@ -61,11 +65,11 @@ mvn spring-boot:build-image
 docker run -it -p8888:8080 text-quest:1.0.0
 ```
 
-## Class Diagram
+## Java Classes Diagram
 
 ![screenshot](./src/main/resources/static/images/classes.png?raw=true)
 
-## Bean Diagram
+## Spring Beans Dependencies Diagram
 
 ![screenshot](./src/main/resources/static/images/beans.png?raw=true)
 
