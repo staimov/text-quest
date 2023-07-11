@@ -147,6 +147,7 @@ public class InvestigateQuestModelFactory implements QuestModelFactory{
         model.addStep(step5a);
         model.addStep(step5b);
         model.addStep(step5c);
+
         model.setRoot(step1);
 
         return model;

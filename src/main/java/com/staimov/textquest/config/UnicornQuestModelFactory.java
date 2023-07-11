@@ -196,6 +196,7 @@ public class UnicornQuestModelFactory implements QuestModelFactory{
         model.addStep(step17);
         model.addStep(step18);
         model.addStep(step19);
+
         model.setRoot(step1);
 
         return model;

@@ -47,6 +47,7 @@ public class DefaultQuestModelFactory implements QuestModelFactory{
         model.addStep(step4);
         model.addStep(step5);
         model.addStep(step6);
+
         model.setRoot(step0);
 
         return model;
