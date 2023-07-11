@@ -16,7 +16,7 @@ public class QuestConfig {
 
     @Bean
     public QuestModel selectedQuestModel() {
-        if (textQuestType.isBlank()) {
+        if (textQuestType == null || textQuestType.isBlank()) {
             logger.debug("Quest type is blank");
         }
         else {
