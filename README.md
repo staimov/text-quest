@@ -9,6 +9,8 @@ https://javarush.com/quests/lectures/jru.module3.lecture04
 
 https://text-quest-l7tx.onrender.com
 
+(It may take some time at the first start)
+
 ## Screenshot
 
 ![screenshot](./src/main/resources/static/images/screenshot1.png?raw=true)
