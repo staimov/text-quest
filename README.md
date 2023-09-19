@@ -1,4 +1,4 @@
-[![My Skills](https://skillicons.dev/icons?i=java,spring,html,bootstrap,docker&theme=light)](https://skillicons.dev)
+[![My Skills](https://skillicons.dev/icons?i=java,spring,maven,html,bootstrap,docker&theme=light)](https://skillicons.dev)
 # text-quest
 ### Text quest game
 
