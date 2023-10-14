@@ -1,3 +1,4 @@
+[![My Skills](https://skillicons.dev/icons?i=java,spring,maven,html,bootstrap,docker&theme=light)](https://skillicons.dev)
 # text-quest
 ### Text quest game
 
@@ -8,6 +9,8 @@ https://javarush.com/quests/lectures/jru.module3.lecture04
 ## Feel free to test the project deployed on render.com
 
 https://text-quest-l7tx.onrender.com
+
+(It may take some time at the first start)
 
 ## Screenshot
 
