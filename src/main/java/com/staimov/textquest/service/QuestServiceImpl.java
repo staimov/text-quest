@@ -13,7 +13,11 @@ public class QuestServiceImpl implements QuestService {
     final private QuestModel questModel;
     final private SessionData sessionData;
 
-    public QuestServiceImpl(@Qualifier("selectedQuestModel") QuestModel questModel, SessionData sessionData) {
+    public QuestServiceImpl(@Qualifier("selectedQuestModel") QuestModel questModel,
+                SessionData sessionData
+            /* to support session scope of SessionData object
+                Spring will create proxy object and inject this proxy instead of SessionData object,
+                 proxy then will provide valid SessionData object */) {
         logger.debug("Inside QuestServiceImpl(QuestModel questModel, SessionData sessionData) constructor");
 
         if (questModel == null) {
